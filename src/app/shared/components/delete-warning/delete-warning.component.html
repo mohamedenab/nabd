@@ -1,0 +1,14 @@
+<div class="flex flex-col py-16 px-24 relative">
+  <button mat-icon-button class="!absolute  top-2 left-2" [autofocus]="false" type="button" (click)="dismiss(false)">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h3>{{data.message}}</h3>
+  <div class="flex gap-2.5 items-center justify-center">
+    <button mat-raised-button color="primary" class=" mt-10 basis-1/2" cdkFocusInitial (click)="dismiss(false)">
+      لا
+    </button>
+    <button mat-raised-button color="warn" class=" mt-10 basis-1/2" (click)="dismiss(true)">
+      متأكد
+    </button>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 mt-10">التقارير
+  الشهريه</h3>
+<div class="flex flex-col lg:justify-end md:justify-center">
+  <h3
+    class="text-xl mr-auto lg:ml-52 md:mx-auto sm:mx-auto w-fit font-bold rounded-xl bg-primary-300 p-2.5 text-white mb-10 ">
+    اختر الفتره </h3>
+  <div class="inline-flex mr-auto ml-10">
+    <mat-form-field appearance="outline">
+      <mat-label>الشهر</mat-label>
+      <mat-select [formControl]="month">
+        <mat-option *ngFor="let month of months" [value]="month">
+          {{month}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="mr-5">
+      <mat-label>السنة</mat-label>
+      <mat-select [formControl]="year">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{year}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="border border-solid p-5 m-5 flex flex-col ">
+  <button class="!mr-auto" mat-raised-button color="primary">اضافة</button>
+  <div class="border border-solid border-gray-400 p-4 flex my-4 gap-3">
+    <div class="basis-2/12 inline-flex flex-col gap-3">
+      <div class="border border-solid p-4 text-center">شهري</div>
+      <div class="border border-solid p-4 text-center">تاريخ الأضافة: 10/10/2022</div>
+      <div class="border border-solid p-4 text-center">تاريخ اخر تعديل: 10/10/2022</div>
+    </div>
+    <div class="basis-9/12 inline-flex flex-col gap-3 justify-center">
+      <div class="border border-solid p-4 text-center">ثابت</div>
+      <div class="border border-solid p-4 text-center">لا يوجد لينك</div>
+
+    </div>
+    <div class="basis-1/12 inline-flex flex-col justify-center gap-3 items-center">
+      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="border border-solid border-gray-400 p-4 flex my-4 gap-3">
+    <div class="basis-2/12 inline-flex flex-col gap-3">
+      <div class="border border-solid p-4 text-center">مره واحدة </div>
+      <div class="border border-solid p-4 text-center">تاريخ الأضافة: 10/10/2022</div>
+      <div class="border border-solid p-4 text-center">تاريخ اخر تعديل: 10/10/2022</div>
+    </div>
+    <div class="basis-9/12 inline-flex flex-col gap-3 justify-center">
+      <div class="border border-solid p-4 text-center">اعاده  مخ و اعصاب عند دكتور مرتضي العربي متأخره لسبوعين </div>
+      <div class="border border-solid p-4 text-center">لا يوجد لينك</div>
+
+    </div>
+    <div class="basis-1/12 inline-flex flex-col justify-center gap-3 items-center">
+      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

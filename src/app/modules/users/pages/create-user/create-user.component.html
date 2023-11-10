@@ -1,0 +1,47 @@
+<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10"> مستخدم  {{router.url.includes('create') ? 'جـديد' : ''}}</h3>
+<form [formGroup]="createUser">
+  <div class="flex px-4 pb-4">
+    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pl-36">
+      <mat-form-field appearance="outline">
+        <mat-label>اسم المستخدم</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>كلمة السر</mat-label>
+        <input matInput formControlName="password">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>نوع المستخدم</mat-label>
+        <mat-select formControlName="roles">
+          <mat-option *ngFor="let usertype of userTypes" [value]="usertype.type">
+            {{usertype.text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pr-36">
+      <mat-form-field appearance="outline">
+        <mat-label>رقم الهاتف</mat-label>
+        <input matInput formControlName="phoneNumber">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>الايميل</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="createUser.get('roles')?.value === 'ROLE_NU'">
+        <mat-label>المناطق</mat-label>
+        <mat-select formControlName="locationListId" multiple>
+          <mat-option *ngFor="let location of locations" [value]="location.id">
+            {{location.locationName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+  </div>
+  <button type="submit" mat-raised-button color="primary" (click)="submit()"
+          class=" mx-auto !block  text-2xl !px-6 !py-4 !rounded-2xl !h-auto font-bold">
+    {{router.url.includes('create') ? 'إضافة' : 'تعديل'}} مستخدم
+  </button>
+</form>

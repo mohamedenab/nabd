@@ -17,7 +17,10 @@ module.exports = {
           '900': '#103f6a',
           '950': '#0b2846',
         }
-      }
+      },
+      fontFamily: {
+        cairo: ['Cairo', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'Arial', 'sans-serif']
+      },
     },
   },
   plugins: [],

@@ -1,0 +1,147 @@
+<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 ">إضافة حالة</h3>
+
+<form [formGroup]="createPatient">
+  <div class="flex px-4 pb-4">
+    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pl-36">
+      <mat-form-field appearance="outline">
+        <mat-label>اسم الحالة</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="createPatient?.get('name')?.hasError('required')">هذا الحقل مطلوب</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>الرقم القومي الحالة</mat-label>
+        <input matInput formControlName="nationalID">
+        <mat-error *ngIf="createPatient?.get('name')?.hasError('required')">هذا الحقل مطلوب</mat-error>
+        <mat-error *ngIf="createPatient?.get('name')?.hasError('pattern')">رقم البطاقة غير صحيح</mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>اسم العائل</mat-label>
+        <input matInput formControlName="nameOfParent">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>الرقم القومي للعائل</mat-label>
+        <input matInput formControlName="nationalIDForParent">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>الحالة الأجتماعية</mat-label>
+        <mat-select formControlName="maritalStatus">
+          <mat-option *ngFor="let status of maritalStatus" [value]="status.code">
+            {{status.text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>عدد افراد الاسرة</mat-label>
+        <input matInput formControlName="numberOfFamilyMembers">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>المنطقة</mat-label>
+        <mat-select formControlName="locationsId">
+          <mat-option *ngFor="let region of locations" [value]="region.id">
+            {{region.locationName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>العنوان</mat-label>
+        <textarea matInput formControlName="address"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>لينك العنوان</mat-label>
+        <input matInput formControlName="addressLink">
+      </mat-form-field>
+
+    </div>
+    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pr-36">
+      <mat-form-field appearance="outline">
+        <mat-label>ارقام الهاتف</mat-label>
+        <mat-chip-grid #chipGrid aria-label="ادخل رقم الهاتف">
+          <mat-chip-row *ngFor="let phoneNumber of mobileNumbers"
+
+                        (removed)="remove(phoneNumber)"
+                        [editable]="true"
+                        (edited)="edit(phoneNumber, $event)"
+                        [aria-description]="'press enter to edit ' + phoneNumber">
+            {{phoneNumber}}
+            <button matChipRemove [attr.aria-label]="'remove ' + phoneNumber">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+          <input placeholder="هاتف جديد..."
+                 [matChipInputFor]="chipGrid"
+                 type="number"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)"/>
+        </mat-chip-grid>
+      </mat-form-field>
+
+      <label>تفاصيل الاستكشاف</label>
+      <div class="editor">
+
+        <ckeditor [editor]="editor" formControlName="discoveryDetailsWithImageLink" (ready)="onReady($event)"></ckeditor>
+
+      </div>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>مدة المساعدة</mat-label>
+        <input matInput formControlName="periodOfDiscovery">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>هل يوجد تامين</mat-label>
+        <mat-select formControlName="thereInsurance">
+          <mat-option *ngFor="let insuranceType of insuranceTypes" [value]="insuranceType.type">
+            {{insuranceType.text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>اسم المتابع</mat-label>
+        <input matInput formControlName="volunteerName">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>رقم هاتف المتابع</mat-label>
+        <input matInput formControlName="volunteerMobileNumber">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>تاريخ بداية القرار</mat-label>
+        <input matInput formControlName="dateOfBeginningOfDecision">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>تاريخ بداية المساعدة</mat-label>
+        <input matInput formControlName="dateOfHelp">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
+        <mat-label>التخصص</mat-label>
+        <mat-select formControlName="specializations" multiple>
+          <mat-option *ngFor="let specialization of specializations"
+                      [value]="specialization.id">{{specialization.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <button type="submit" mat-raised-button color="primary" (click)="submit()"
+          class=" mx-auto !block  text-2xl !px-12 !py-5 !rounded-2xl !h-auto font-bold">
+    إضافة حالة
+  </button>
+
+</form>

@@ -1,54 +1,10 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+@use 'node_modules/@ngneat/hot-toast/src/styles/styles.scss';
+@use '@angular/cdk';
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
 $dark-primary-text: rgba(black, 0.87);
 $light-primary-text: white;
-//$mdThemingProvider.definePalette('mcgpalette0', {
-//'50': 'e2edf6',
-//'100': 'b6d2ea',
-//'200': '85b5dc',
-//'300': '5497cd',
-//'400': '2f80c3',
-//'500': '0a6ab8',
-//'600': '0962b1',
-//'700': '0757a8',
-//'800': '054da0',
-//'900': '033c91',
-//'A100': 'bdd3ff',
-//'A200': '8ab1ff',
-//'A400': '578fff',
-//'A700': '3d7eff',
-//'contrastDefaultColor': 'light',
-//'contrastDarkColors': [
-//'50',
-//'100',
-//'200',
-//'300',
-//'A100',
-//'A200',
-//'A400'
-//],
-//'contrastLightColors': [
-//'400',
-//'500',
-//'600',
-//'700',
-//'800',
-//'900',
-//'A700'
-//]
-//});
 $nabd-palette: (
   50: #e2edf6,
   100: #b6d2ea,
@@ -81,15 +37,9 @@ $nabd-palette: (
     A700: $light-primary-text,
   )
 );
-
 $nabd-primary: mat.define-palette($nabd-palette);
 $nabd-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
 $nabd-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
 $nabd-theme: mat.define-light-theme((
   color: (
     primary: $nabd-primary,
@@ -98,14 +48,86 @@ $nabd-theme: mat.define-light-theme((
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include mat.all-component-themes($nabd-theme);
 
-/* You can add global styles to this file, and also import other style files */
+//@import "primeng/resources/themes/lara-light-blue/theme.css";
+//@import "primeng/resources/primeng.css";
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('Cairo Light'), local('Cairo-Light'),
+  url(./assets/fonts/Cairo/Cairo-Light.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+  U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Cairo Regular'), local('Cairo-Regular'),
+  url(./assets/fonts/Cairo/Cairo-Regular.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+  U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cairo SemiBold'), local('Cairo-SemiBold'),
+  url(./assets/fonts/Cairo/Cairo-SemiBold.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+  U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Cairo Bold'), local('Cairo-Bold'),
+  url(./assets/fonts/Cairo/Cairo-Bold.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+  U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local('Cairo Black'), local('Cairo-Black'),
+  url(./assets/fonts/Cairo/Cairo-Black.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+  U+FB50-FDFF, U+FE80-FEFC;
+}
+
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: auto;
+}
+
+body {
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+.mat-mdc-paginator-range-label {
+  direction: ltr;
+}
+
+a.link{
+  @apply underline text-primary-400
+}
