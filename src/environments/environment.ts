@@ -6,11 +6,12 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080/api/v1',
   auth: 'api/v1/auth',
-  locations: 'api/v1/locations',
+  locations: 'api/v1/regions',
   users: 'api/v1/users',
   specialization: 'api/v1/specialization',
   patient: 'api/v1/patient',
   medicine: 'api/v1/medicine',
+  history: 'api/v1/history',
   upload: 'api/v1/upload'
 };
 

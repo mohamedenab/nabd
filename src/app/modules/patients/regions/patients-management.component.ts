@@ -16,11 +16,11 @@ const MEDICINE =
 `;
 
 @Component({
-  selector: 'app-locations',
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.scss']
+  selector: 'app-regions',
+  templateUrl: './patients-management.component.html',
+  styleUrls: ['./patients-management.component.scss']
 })
-export class LocationComponent implements AfterViewInit {
+export class PatientsManagementComponent implements AfterViewInit {
   displayedColumns: string[] = ['name', 'phone', 'action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   regionName = ''

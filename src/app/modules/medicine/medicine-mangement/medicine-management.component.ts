@@ -1,9 +1,11 @@
-import {AfterViewInit, Component, inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {AuthService} from "../../../core/services/auth.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {catchError, map, of, startWith, switchMap} from "rxjs";
 import {MedicineService} from "../../../core/services/medicine.service";
+import {FormBuilder} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-medicine-management',
@@ -18,6 +20,17 @@ export class MedicineManagementComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalElements = 10;
   isLoading = true;
+  replacedId: string = ''
+  replaceForm = this.fb.group({
+    firstId: [{value: '', disabled: true}],
+    secondId: '',
+  })
+  @ViewChild('replaceTemp') replaceTemp!: TemplateRef<any>;
+  dialog: MatDialog = inject(MatDialog);
+
+  constructor(private fb: FormBuilder) {
+
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -68,8 +81,39 @@ export class MedicineManagementComponent implements AfterViewInit {
       const formData = new FormData();
       formData.append('file', file);
       this.medicineService.uploadFile(formData).subscribe((res) => {
-        console.log(res)
+        this.medicineService.getMedicines(
+          0,
+          this.paginator.pageSize
+        ).subscribe((res: any) => {
+          this.dataSource = new MatTableDataSource(res.data);
+          this.totalElements = res.totalElements;
+          this.isLoading = false;
+        })
       })
     }
+  }
+
+  openReplaceMedicine(medicine: any) {
+    const dialogTemp = this.dialog.open(this.replaceTemp)
+    this.replacedId = medicine.id;
+    this.replaceForm.get('firstId')?.setValue(medicine.nameInEng)
+    dialogTemp.afterClosed().subscribe((res) => {
+      this.replaceForm.reset()
+    })
+  }
+
+  replaceMedicine() {
+    this.medicineService.replaceMedicine(this.replacedId, this.replaceForm.get('secondId')?.value!).subscribe((res) => {
+      this.medicineService.getMedicines(
+        0,
+        this.paginator.pageSize
+      ).subscribe((res: any) => {
+        this.dataSource = new MatTableDataSource(res.data);
+        this.totalElements = res.totalElements;
+        this.isLoading = false;
+        this.dialog.closeAll();
+        this.replacedId = '';
+      })
+    })
   }
 }

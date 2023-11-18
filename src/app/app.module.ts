@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -9,6 +9,8 @@ import {AuthInterceptorService} from "./core/Interceptors/auth-interceptor-servi
 import {HotToastModule} from '@ngneat/hot-toast';
 import {LoaderInterceptor} from "./core/Interceptors/loader.interceptor";
 import {LoaderComponent} from "./shared/components/loader/loader.component";
+import {GlobalErrorHandler} from './core/Interceptors/global-error-handler';
+import {EmptyResponseInterceptor} from "./core/Interceptors/empty-response-body-interceptor.resolver";
 
 @NgModule({
   declarations: [
@@ -28,6 +30,10 @@ import {LoaderComponent} from "./shared/components/loader/loader.component";
     multi: true
   },
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
   ],
   bootstrap: [AppComponent]
 })

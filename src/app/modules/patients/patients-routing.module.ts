@@ -4,7 +4,12 @@ import {CreatePatientComponent} from "./create-patient/create-patient.component"
 import {PatientDetailsComponent} from "./patient-details/patient-details.component";
 import {locationsResolver} from "../../core/resolver/locations.resolver";
 import {specializationsResolver} from "../../core/resolver/specializations.resolver";
-import {patientHistoryResolver, patientMedicineResolver, patientResolver} from "../../core/resolver/patient.resolver";
+import {
+  patientHistoryDatesResolver,
+  patientHistoryResolver,
+  patientMedicineResolver,
+  patientResolver
+} from "../../core/resolver/patient.resolver";
 
 const routes: Routes = [
   {
@@ -13,17 +18,24 @@ const routes: Routes = [
     resolve: {locations: locationsResolver, specialization: specializationsResolver}
   },
   {
-    path: 'edit/:id',
-    component: CreatePatientComponent,
-    resolve: {locations: locationsResolver, specialization: specializationsResolver}
+    path: ':id', resolve: {
+      patient: patientResolver,
+    }, children: [
+      {
+        path: 'edit',
+        component: CreatePatientComponent,
+        resolve: {locations: locationsResolver, specialization: specializationsResolver}
+      },
+      {
+        path: 'details', component: PatientDetailsComponent, resolve: {
+          medicine: patientMedicineResolver,
+          history: patientHistoryResolver, specialization: specializationsResolver,
+          historyDates: patientHistoryDatesResolver
+        }
+      },
+    ]
   },
-  {
-    path: 'details/:id', component: PatientDetailsComponent, resolve: {
-      // patient: patientResolver,
-      medicine: patientMedicineResolver,
-      history: patientHistoryResolver, specialization: specializationsResolver
-    }
-  },
+
 ];
 
 @NgModule({

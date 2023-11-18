@@ -10,22 +10,33 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatTableModule} from "@angular/material/table";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import {MatDialogModule} from "@angular/material/dialog";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MedicinesSearchComponent} from "../../shared/components/medicines-search/medicines-search.component";
 
 
 @NgModule({
   declarations: [
     MedicineManagementComponent
   ],
-    imports: [
-        CommonModule,
-        MedicineRoutingModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatPaginatorModule,
-        MatProgressBarModule,
-        MatTableModule
-    ]
+  imports: [
+    CommonModule,
+    MedicineRoutingModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatTableModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MedicinesSearchComponent
+  ]
 })
 export class MedicineModule { }

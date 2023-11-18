@@ -1,70 +1,102 @@
 <h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 mt-10">التقارير
   الشهريه</h3>
-<div class="flex flex-col lg:justify-end md:justify-center">
+<div class="flex flex-col lg:justify-end md:justify-center items-center">
   <h3
     class="text-xl mr-auto lg:ml-52 md:mx-auto sm:mx-auto w-fit font-bold rounded-xl bg-primary-300 p-2.5 text-white mb-10 ">
     اختر الفتره </h3>
-  <div class="inline-flex mr-auto ml-10">
-    <mat-form-field appearance="outline">
-      <mat-label>الشهر</mat-label>
-      <mat-select [formControl]="month">
-        <mat-option *ngFor="let month of months" [value]="month">
-          {{month}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="inline-flex flex-col mr-auto ml-10" [formGroup]="historyFrom">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>الشهر</mat-label>
+        <mat-select formControlName="month">
+          <mat-option *ngFor="let month of months" [value]="month">
+            {{month}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="mr-5">
-      <mat-label>السنة</mat-label>
-      <mat-select [formControl]="year">
-        <mat-option *ngFor="let year of years" [value]="year">
-          {{year}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="mr-5">
+        <mat-label>السنة</mat-label>
+        <mat-select formControlName="year">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{year}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button class="mx-auto" mat-raised-button color="primary" (click)="getHistory()">اختيار</button>
+
   </div>
+
 </div>
 
 <div class="border border-solid p-5 m-5 flex flex-col ">
-  <button class="!mr-auto" mat-raised-button color="primary">اضافة</button>
-  <div class="border border-solid border-gray-400 p-4 flex my-4 gap-3">
-    <div class="basis-2/12 inline-flex flex-col gap-3">
-      <div class="border border-solid p-4 text-center">شهري</div>
-      <div class="border border-solid p-4 text-center">تاريخ الأضافة: 10/10/2022</div>
-      <div class="border border-solid p-4 text-center">تاريخ اخر تعديل: 10/10/2022</div>
-    </div>
-    <div class="basis-9/12 inline-flex flex-col gap-3 justify-center">
-      <div class="border border-solid p-4 text-center">ثابت</div>
-      <div class="border border-solid p-4 text-center">لا يوجد لينك</div>
+  <button class="!mr-auto" mat-raised-button color="primary" (click)="openHistory()">اضافة</button>
+  <div class=" overflow-y-auto mt-4" [ngClass]="{'h-[50vh]':history.length>0}">
+    <ng-container *ngIf="history.length>0;else noHistory">
+      <div class="border border-solid border-gray-400 p-4 flex gap-3"
+           [ngClass]="{'my-4':(history.length-1 !== index && index>0),'mb-4':index ===0,'mt-4':index ===history.length-1}"
+           *ngFor="let singleHistory of history;let index = index">
+        <div class="basis-2/12 inline-flex flex-col gap-3">
+          <div
+            class="border border-solid p-4 text-center">{{singleHistory.historyType === historyType.ONCE ? 'مره واحدة' : 'شهري'}}</div>
+          <div class="border border-solid p-4 text-center">تاريخ الأضافة: {{singleHistory.startAt}}</div>
+          <div class="border border-solid p-4 text-center">تاريخ اخر تعديل: {{singleHistory.updatedAt}}</div>
+        </div>
+        <div class="basis-9/12 inline-flex flex-col gap-3 justify-center">
+          <div class="border border-solid p-4 text-center">{{singleHistory.comment}}</div>
+          <a class="border border-solid p-4 text-center" target="_blank"
+             [href]="singleHistory.link">{{singleHistory.link}}</a>
 
-    </div>
-    <div class="basis-1/12 inline-flex flex-col justify-center gap-3 items-center">
-      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
+        </div>
+        <div class="basis-1/12 inline-flex flex-col justify-center gap-3 items-center">
+          <button mat-mini-fab color="warn" aria-label="delete history" (click)="deleteHistory(singleHistory.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-mini-fab color="primary" aria-label="edit history" (click)="openEditHistory(singleHistory)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
   </div>
-  <div class="border border-solid border-gray-400 p-4 flex my-4 gap-3">
-    <div class="basis-2/12 inline-flex flex-col gap-3">
-      <div class="border border-solid p-4 text-center">مره واحدة </div>
-      <div class="border border-solid p-4 text-center">تاريخ الأضافة: 10/10/2022</div>
-      <div class="border border-solid p-4 text-center">تاريخ اخر تعديل: 10/10/2022</div>
-    </div>
-    <div class="basis-9/12 inline-flex flex-col gap-3 justify-center">
-      <div class="border border-solid p-4 text-center">اعاده  مخ و اعصاب عند دكتور مرتضي العربي متأخره لسبوعين </div>
-      <div class="border border-solid p-4 text-center">لا يوجد لينك</div>
 
-    </div>
-    <div class="basis-1/12 inline-flex flex-col justify-center gap-3 items-center">
-      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-  </div>
 </div>
+<ng-template #addHistoryTemp>
+  <div class="flex flex-col justify-center py-16 px-24 relative">
+    <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" type="button" [mat-dialog-close]="">
+      <mat-icon>close</mat-icon>
+    </button>
+    <form [formGroup]="addHistory" class="flex flex-col">
+      <mat-form-field appearance="outline">
+        <mat-label>نوع التوثيق</mat-label>
+        <mat-select formControlName="historyType">
+          <mat-option [value]="historyType.ONCE">
+            مره واحدة
+          </mat-option>
+          <mat-option [value]="historyType.MONTHLY">
+            شهري
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>التوثيق</mat-label>
+        <textarea matInput formControlName="comment"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>اضافة لينك</mat-label>
+        <input matInput formControlName="link">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class=" mt-10 " [disabled]="addHistory.invalid"
+              (click)=" editId?editHistory() :submitAddHistory()">
+        {{editId ? 'تعديل' : 'إضافة'}} توثيق
+      </button>
+    </form>
+  </div>
+</ng-template>
+<ng-template #noHistory>
+  <div class="text-center">
+    لا يوجد توثيق
+  </div>
+</ng-template>

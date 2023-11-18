@@ -8,6 +8,7 @@ import {Location} from "../../../core/interfaces/location";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Specialization} from "../../../core/interfaces/specialization";
 import {PatientService} from "../../../core/services/patient.service";
+import {Patient} from "../../../core/interfaces/patient";
 
 @Component({
   selector: 'app-create-patient',
@@ -56,7 +57,7 @@ export class CreatePatientComponent implements OnInit {
       nationalID: ['', [Validators.required, Validators.pattern('^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$')]],
       nameOfParent: ['',],
       nationalIDForParent: ['', [Validators.pattern('^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$')]],
-      maritalStatus: ['',[Validators.required]],
+      maritalStatus: ['', [Validators.required]],
       numberOfFamilyMembers: ['', [Validators.required]],
       locationsId: ['', [Validators.required]],
       address: ['', [Validators.required]],
@@ -68,12 +69,16 @@ export class CreatePatientComponent implements OnInit {
       volunteerName: [''],
       volunteerMobileNumber: [''],
       dateOfBeginningOfDecision: [''],
-      specializations: [''],
+      specializations: [[]],
     })
   }
 
   ngOnInit() {
     this.route.data.subscribe((res: any) => {
+      if (res.patient) {
+        this.createPatient.patchValue({...res.patient})
+        this.mobileNumbers = (res.patient as Patient).mobileNumbers
+      }
       this.locations = res.locations['data'];
       this.specializations = res.specialization;
     })
@@ -110,13 +115,11 @@ export class CreatePatientComponent implements OnInit {
   edit(fruit: any, event: MatChipEditedEvent) {
     const value = event.value.trim();
 
-    // Remove fruit if it no longer has a name
     if (!value) {
       this.remove(fruit);
       return;
     }
 
-    // Edit existing fruit
     const index = this.mobileNumbers.indexOf(fruit);
     if (index >= 0) {
       this.mobileNumbers[index] = value;
@@ -136,8 +139,15 @@ export class CreatePatientComponent implements OnInit {
   submit() {
     let formData = this.createPatient.getRawValue();
     formData['mobileNumbers'] = this.mobileNumbers
-    this.patientService.createPatient(formData).subscribe((res) => {
-      this.router.navigate(['/regions/' + this.route.snapshot.paramMap.get('locationId')!])
-    })
+    if (this.router.url.includes('edit')) {
+      this.patientService.editPatient( this.route.snapshot.paramMap.get('id')!,formData).subscribe((res) => {
+        this.router.navigate(['/regions/' + formData.locationsId!])
+      })
+    } else {
+      this.patientService.createPatient(formData).subscribe((res) => {
+        this.router.navigate(['/regions/' + formData.locationsId!])
+      })
+    }
+
   }
 }

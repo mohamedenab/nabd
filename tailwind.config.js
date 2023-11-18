@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       fontFamily: {
-        cairo: ['Cairo', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'Arial', 'sans-serif']
+        cairo: ['Almarai', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'Arial', 'sans-serif']
       },
     },
   },

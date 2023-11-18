@@ -1,5 +1,11 @@
-import {Component, Input} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {Component, inject, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
+import {HistoryType, patientHistory} from "../../../../../core/interfaces/patient";
+import {PatientService} from "../../../../../core/services/patient.service";
+import {ActivatedRoute} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {HotToastService} from "@ngneat/hot-toast";
+import {DeleteWarningComponent} from "../../../../../shared/components/delete-warning/delete-warning.component";
 
 @Component({
   selector: 'app-patient-details-history',
@@ -7,9 +13,77 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./patient-details-history.component.scss']
 })
 export class PatientDetailsHistoryComponent {
-  @Input() history: any;
-  months: number[] = [10, 11, 12];
-  years: number[] = [2023];
-  month = new FormControl('')
-  year = new FormControl('')
+  @Input() history: patientHistory[] = [];
+  @Input() months: string[] ;
+  @Input() years: string[] ;
+  historyFrom = this.fb.group({
+    month: ['', [Validators.required]],
+    year: ['', [Validators.required]],
+  })
+  addHistory = this.fb.group({
+    historyType: ['', [Validators.required]],
+    comment: ['', [Validators.required]],
+    link: ['', [Validators.required]],
+  })
+  historyType = HistoryType
+  @ViewChild('addHistoryTemp') addHistoryTemp!: TemplateRef<any>;
+  editId: string;
+  private route = inject(ActivatedRoute);
+
+  constructor(private dialog: MatDialog, private fb: FormBuilder, private patientService: PatientService, private toast: HotToastService) {
+    const date = new Date();
+    this.historyFrom.get('month')?.setValue((date.getMonth() + 1).toString())
+    this.historyFrom.get('year')?.setValue((date.getFullYear()).toString())
+  }
+
+  openHistory() {
+    this.dialog.open(this.addHistoryTemp, {width: '50vw', disableClose: false})
+  }
+
+  submitAddHistory() {
+    this.patientService.addHistory(this.route.snapshot.paramMap.get('id')!,
+      this.historyFrom.get('year')?.value!, this.historyFrom.get('month')?.value!, this.addHistory.value).subscribe((res) => {
+      this.toast.success('تم اضافة التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
+      this.dialog.closeAll();
+      this.getHistory();
+    })
+  }
+
+  getHistory() {
+    this.patientService.getHistory(this.route.snapshot.paramMap.get('id')!,
+      this.historyFrom.get('year')?.value!, this.historyFrom.get('month')?.value!).subscribe((res: patientHistory[]) => {
+      this.history = res
+    })
+  }
+
+  deleteHistory(id: number) {
+    let dialogRef = this.dialog.open(DeleteWarningComponent, {
+      disableClose: true,
+      data: {message: `هل انت متاكد انك تريد حذف هذا التوثيق`}
+    })
+    dialogRef.afterClosed().subscribe((res) => {
+      this.patientService.deleteHistory(id.toString()).subscribe((res) => {
+        this.getHistory();
+        this.toast.success('تم حذف التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
+
+      })
+    })
+
+  }
+
+  openEditHistory(history: patientHistory) {
+    this.editId = history.id.toString()
+    this.addHistory.patchValue(history)
+    this.dialog.open(this.addHistoryTemp, {width: '50vw', disableClose: false})
+
+  }
+
+  editHistory() {
+    this.patientService.editHistory(this.editId, this.addHistory.value).subscribe((res) => {
+      this.getHistory()
+      this.dialog.closeAll()
+      this.toast.success('تم تعديل التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
+
+    })
+  }
 }

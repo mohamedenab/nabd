@@ -7,6 +7,7 @@ import {UsersService} from "../../../../core/services/users.service";
 import {DeleteWarningComponent} from "../../../../shared/components/delete-warning/delete-warning.component";
 import {MatDialog} from "@angular/material/dialog";
 import {User} from "../../../../core/interfaces/users";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
   selector: 'app-users-management',
@@ -22,7 +23,7 @@ export class UsersManagementComponent implements AfterViewInit {
   private router = inject(Router);
   private activeRouter = inject(ActivatedRoute);
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private toast: HotToastService) {
   }
 
   ngAfterViewInit() {
@@ -56,10 +57,10 @@ export class UsersManagementComponent implements AfterViewInit {
   deleteUser(user: User) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: `هل انت متاكد انك تريد حذف المنطقة ${user.name} ؟ `}
+      data: {message: `هل انت متاكد انك تريد حذف المستخدم ${user.name} ؟ `}
     })
     dialogRef.afterClosed().subscribe((res) => {
-
+      this.toast.success('تم حذف المستخدم', {duration: 5000, position: "top-right", theme: "snackbar"});
     })
   }
 }

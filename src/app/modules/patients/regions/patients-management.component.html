@@ -16,7 +16,7 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> اسم الحالة</th>
         <td mat-cell *matCellDef="let element" class="whitespace-nowrap">
-          <a  [routerLink]="'/patients/details/'+element.id">
+          <a [routerLink]="'/patients/'+element.id+'/details/'">
             {{element.name}}
           </a>
         </td>
@@ -26,8 +26,8 @@
         <th mat-header-cell *matHeaderCellDef> رقم الهاتف</th>
         <td mat-cell *matCellDef="let element">
           <a class="underline whitespace-nowrap" *ngFor="let phone of element.mobileNumbers" [href]="'tel:'+phone">
-          {{phone}}
-        </a></td>
+            {{phone}}
+          </a></td>
       </ng-container>
 
       <ng-container matColumnDef="action">
@@ -60,7 +60,7 @@
               <mat-icon aria-hidden="false" fontIcon="pause"></mat-icon>
 تعطيل              </span>
             </button>
-            <a [routerLink]="'/patients/details/'+element.id">
+            <a [routerLink]="'/patients/'+element.id+'/details/'">
               <button mat-raised-button color="primary">
                 <mat-icon svgIcon="medicine" aria-hidden="false"></mat-icon>
                 الادوية

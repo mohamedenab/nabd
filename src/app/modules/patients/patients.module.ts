@@ -30,6 +30,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from "@angular/material-moment-adapter";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MedicinesSearchComponent} from "../../shared/components/medicines-search/medicines-search.component";
+import {PatientsManagementComponent} from "./regions/patients-management.component";
 // import {CalendarModule} from "primeng/calendar";
 
 export const MY_FORMATS = {
@@ -50,7 +51,8 @@ export const MY_FORMATS = {
     PatientDetailsComponent,
     PatientDetailsHeaderComponent,
     PatientDetailsHistoryComponent,
-    PatientDetailsMedicinesComponent
+    PatientDetailsMedicinesComponent,
+    PatientsManagementComponent
   ],
   imports: [
     CommonModule,

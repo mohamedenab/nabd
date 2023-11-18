@@ -4,7 +4,8 @@ import {MedicineManagementComponent} from "./medicine-mangement/medicine-managem
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'management'},
-  {path: 'management', component: MedicineManagementComponent}
+  {path: 'management', component: MedicineManagementComponent},
+  {path: ':id/patients', component: MedicineManagementComponent}
 ];
 
 @NgModule({

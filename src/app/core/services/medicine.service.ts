@@ -20,13 +20,17 @@ export class MedicineService {
     return this.http.delete(`${this.baseUrl}/delete/${id}`)
   }
 
-  replaceMedicine(firstId: number,
-                  secondId: number,) {
-    return this.http.get(`${this.baseUrl}/${firstId}/${secondId}`)
+  replaceMedicine(firstId: string,
+                  secondId: any,) {
+    return this.http.get(`${this.baseUrl}/${firstId}/${secondId.id}`)
 
   }
 
   uploadFile(formDate: FormData) {
-    return this.http.post(`${this.uploadUrl}`, formDate)
+    return this.http.post(`${this.uploadUrl}`, formDate, {
+      headers: {
+        responseType: "blob"
+      }
+    })
   }
 }

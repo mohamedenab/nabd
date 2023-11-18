@@ -1,4 +1,5 @@
-<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 ">إضافة حالة</h3>
+<h3
+  class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 ">{{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}حالة</h3>
 
 <form [formGroup]="createPatient">
   <div class="flex px-4 pb-4">
@@ -41,7 +42,7 @@
       <mat-form-field appearance="outline">
 
         <mat-label>عدد افراد الاسرة</mat-label>
-        <input matInput formControlName="numberOfFamilyMembers">
+        <input matInput formControlName="numberOfFamilyMembers" type="number">
       </mat-form-field>
       <mat-form-field appearance="outline">
 
@@ -91,7 +92,8 @@
       <label>تفاصيل الاستكشاف</label>
       <div class="editor">
 
-        <ckeditor [editor]="editor" formControlName="discoveryDetailsWithImageLink" (ready)="onReady($event)"></ckeditor>
+        <ckeditor [editor]="editor" formControlName="discoveryDetailsWithImageLink"
+                  (ready)="onReady($event)"></ckeditor>
 
       </div>
 
@@ -141,7 +143,7 @@
   </div>
   <button type="submit" mat-raised-button color="primary" (click)="submit()"
           class=" mx-auto !block  text-2xl !px-12 !py-5 !rounded-2xl !h-auto font-bold">
-    إضافة حالة
+    {{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}حالة
   </button>
 
 </form>

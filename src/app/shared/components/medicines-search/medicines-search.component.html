@@ -1,12 +1,17 @@
 <mat-form-field class="w-full">
   <mat-label>إسم الدواء</mat-label>
 
-  <input
-    type="text"
-    placeholder="إسم الدواء"
-    [formControl]="_control"
-    matInput
-    [matAutocomplete]="auto" >
+  <input *ngIf="!_control.disabled"
+         type="text"
+         placeholder="إسم الدواء"
+         [formControl]="_control"
+         matInput
+         [matAutocomplete]="auto">
+  <input *ngIf="_control.disabled"
+         type="text"
+         placeholder="إسم الدواء"
+         [formControl]="_control"
+         matInput>
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
     <mat-option
       *ngFor="let option of filteredOptions | async"
