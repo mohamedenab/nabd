@@ -18,8 +18,11 @@ export class PatientDetailsComponent implements OnInit {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   public readonly router: Router = inject(Router);
   private patientService: PatientService = inject(PatientService)
+  public innerWidth: any;
+
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
     this.route.data.subscribe((res: any) => {
       this.patient = res.patient;
       this.medicine = res.medicine;

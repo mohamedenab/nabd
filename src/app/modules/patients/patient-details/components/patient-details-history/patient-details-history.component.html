@@ -1,11 +1,9 @@
-<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 mt-10">التقارير
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-20 lg:block hidden">التقارير
   الشهريه</h3>
-<div class="flex flex-col lg:justify-end md:justify-center items-center">
-  <h3
-    class="text-xl mr-auto lg:ml-52 md:mx-auto sm:mx-auto w-fit font-bold rounded-xl bg-primary-300 p-2.5 text-white mb-10 ">
-    اختر الفتره </h3>
-  <div class="inline-flex flex-col mr-auto ml-10" [formGroup]="historyFrom">
-    <div>
+
+<div class="border border-solid p-5 m-5 flex flex-col">
+  <div class="flex justify-between items-center lg:flex-row flex-col-reverse">
+    <div class="inline-flex items-center lg:flex-row flex-col" [formGroup]="historyFrom">
       <mat-form-field appearance="outline">
         <mat-label>الشهر</mat-label>
         <mat-select formControlName="month">
@@ -15,7 +13,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="mr-5">
+      <mat-form-field appearance="outline" class="lg:mr-5">
         <mat-label>السنة</mat-label>
         <mat-select formControlName="year">
           <mat-option *ngFor="let year of years" [value]="year">
@@ -23,37 +21,40 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button class="lg:mr-5 text-xl" mat-raised-button color="primary" (click)="getHistory()">اختر</button>
+
     </div>
-    <button class="mx-auto" mat-raised-button color="primary" (click)="getHistory()">اختيار</button>
 
+    <button class="lg:mb-0 mb-5 !mr-auto text-xl" mat-raised-button color="primary" (click)="openHistory()">اضافة
+    </button>
   </div>
-
-</div>
-
-<div class="border border-solid p-5 m-5 flex flex-col ">
-  <button class="!mr-auto" mat-raised-button color="primary" (click)="openHistory()">اضافة</button>
-  <div class=" overflow-y-auto mt-4" [ngClass]="{'h-[50vh]':history.length>0}">
+  <div class=" lg:overflow-y-auto mt-4 p-2" [ngClass]="{'lg:h-[60vh]':history.length>0}">
     <ng-container *ngIf="history.length>0;else noHistory">
-      <div class="border border-solid border-gray-400 p-4 flex gap-3"
+      <div class="border border-solid border-gray-400 p-4 flex gap-3 bg-white lg:flex-row flex-col"
            [ngClass]="{'my-4':(history.length-1 !== index && index>0),'mb-4':index ===0,'mt-4':index ===history.length-1}"
            *ngFor="let singleHistory of history;let index = index">
         <div class="basis-2/12 inline-flex flex-col gap-3">
           <div
-            class="border border-solid p-4 text-center">{{singleHistory.historyType === historyType.ONCE ? 'مره واحدة' : 'شهري'}}</div>
+            class="border border-solid p-4 text-center"> نوع
+            التوثيق: {{singleHistory.historyType === historyType.ONCE ? 'مره واحدة' : 'شهري'}}
+
+          </div>
           <div class="border border-solid p-4 text-center">تاريخ الأضافة: {{singleHistory.startAt}}</div>
           <div class="border border-solid p-4 text-center">تاريخ اخر تعديل: {{singleHistory.updatedAt}}</div>
         </div>
         <div class="basis-9/12 inline-flex flex-col gap-3 justify-center">
-          <div class="border border-solid p-4 text-center">{{singleHistory.comment}}</div>
+          <div class="border border-solid p-4 text-center"> {{singleHistory.comment}}</div>
           <a class="border border-solid p-4 text-center" target="_blank"
              [href]="singleHistory.link">{{singleHistory.link}}</a>
 
         </div>
-        <div class="basis-1/12 inline-flex flex-col justify-center gap-3 items-center">
-          <button mat-mini-fab color="warn" aria-label="delete history" (click)="deleteHistory(singleHistory.id)">
+        <div class="basis-1/12 inline-flex justify-center gap-3 items-center lg:flex-col flex-row">
+          <button mat-mini-fab color="warn" aria-label="delete history"
+                  (click)="deleteHistory(singleHistory.id)">
             <mat-icon>delete</mat-icon>
           </button>
-          <button mat-mini-fab color="primary" aria-label="edit history" (click)="openEditHistory(singleHistory)">
+          <button mat-mini-fab color="primary" aria-label="edit history"
+                  (click)="openEditHistory(singleHistory)">
             <mat-icon>edit</mat-icon>
           </button>
         </div>
@@ -63,7 +64,7 @@
 
 </div>
 <ng-template #addHistoryTemp>
-  <div class="flex flex-col justify-center py-16 px-24 relative">
+  <div class="flex flex-col justify-center lg:py-16 lg:px-24 pt-16 pb-6 px-4 relative">
     <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" type="button" [mat-dialog-close]="">
       <mat-icon>close</mat-icon>
     </button>

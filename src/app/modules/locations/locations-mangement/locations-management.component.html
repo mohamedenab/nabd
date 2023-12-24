@@ -1,4 +1,5 @@
-<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white ">إدارة المناطق</h3>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">إدارة المناطق</h3>
+
 <button mat-raised-button color="primary" class=" mt-10 mr-auto !block ml-10 "
         *ngIf="authService.isUserSuperAdmin()"
         (click)="openRegion()">
@@ -8,8 +9,9 @@
               </span>
 </button>
 <div class=" mt-10 px-10">
-  <div class="mat-elevation-z8 w-full overflow-x-auto">
-    <table mat-table [dataSource]="dataSource" class="rounded-lg">
+  <div class="mat-elevation-z8 w-full ">
+    <div class="overflow-x-auto">
+    <table mat-table [dataSource]="dataSource" class="rounded-lg  ">
 
       <ng-container matColumnDef="region">
         <th mat-header-cell *matHeaderCellDef> اسم المنطقة</th>
@@ -60,6 +62,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    </div>
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 
     <mat-paginator [length]="totalElements"
@@ -71,12 +74,12 @@
 
 <ng-template #addRegionTemp>
   <div class="flex flex-col justify-center py-16 px-24 relative">
-    <button mat-icon-button mat-dialog-close class="!absolute  top-2 left-2" [autofocus]="false">
+    <button mat-icon-button mat-dialog-close class="!absolute top-2 left-2" [autofocus]="false">
       <mat-icon>close</mat-icon>
     </button>
     <mat-form-field class="example-full-width">
       <mat-label>إسم المنطقة</mat-label>
-      <input matInput [(ngModel)]="regionName" value="Sushi">
+      <input matInput [(ngModel)]="regionName" >
     </mat-form-field>
     <button mat-raised-button color="primary" class=" mt-10 " [disabled]="regionName.length < 3" (click)="addRegion()">
       إضافة منطقة

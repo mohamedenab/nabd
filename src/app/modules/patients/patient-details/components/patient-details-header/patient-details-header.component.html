@@ -1,5 +1,7 @@
-<div class="border border-solid p-5 m-5 relative">
-  <h3 class="text-center  mx-auto border-b-2 p border-solid pb-3"> {{patient.name}} </h3>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">بيانات الحالة</h3>
+
+<div class="border border-solid p-5 m-5 relative bg-white">
+  <h3 class="text-center font-bold text-2xl mx-auto border-b-2 p border-solid pb-3"> {{patient.name}} </h3>
   <ul class="list-none my-3">
     <li class="mt-3"><span>رقم الهاتف: </span>
       <span class="mr-3">
@@ -10,7 +12,7 @@
     </li>
     <li class="mt-3">
       <span>المنطقة :</span>
-      <span><a [routerLink]="'/regions/'+patient.locationsId">{{patient.locationsId}}</a></span>
+      <span><a [routerLink]="'/locations/'+patient.locationsId">{{patient.locationsId}}</a></span>
     </li>
     <li class="mt-3" *ngIf="patient.volunteerName !== ''">
       <span>اسم المتابع :</span>

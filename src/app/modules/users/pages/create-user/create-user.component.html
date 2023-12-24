@@ -1,7 +1,8 @@
-<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10"> مستخدم  {{router.url.includes('create') ? 'جـديد' : ''}}</h3>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-20">مستخدم  {{router.url.includes('create') ? 'جـديد' : ''}}</h3>
+
 <form [formGroup]="createUser">
   <div class="flex px-4 pb-4">
-    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pl-36">
+    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 lg:pl-36 pl-4 ">
       <mat-form-field appearance="outline">
         <mat-label>اسم المستخدم</mat-label>
         <input matInput formControlName="name">
@@ -20,7 +21,7 @@
       </mat-form-field>
 
     </div>
-    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pr-36">
+    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 lg:pr-36 pr-4">
       <mat-form-field appearance="outline">
         <mat-label>رقم الهاتف</mat-label>
         <input matInput formControlName="phoneNumber">

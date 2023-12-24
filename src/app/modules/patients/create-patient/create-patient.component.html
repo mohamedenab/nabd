@@ -1,9 +1,8 @@
-<h3
-  class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 ">{{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}حالة</h3>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">{{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}حالة</h3>
 
 <form [formGroup]="createPatient">
-  <div class="flex px-4 pb-4">
-    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pl-36">
+  <div class="flex px-4 pb-4 lg:flex-row flex-col">
+    <div class="flex flex-col gap-3.5 basis-1/2 lg:w-1/2 lg:px-11 px-4">
       <mat-form-field appearance="outline">
         <mat-label>اسم الحالة</mat-label>
         <input matInput formControlName="name">
@@ -65,7 +64,7 @@
       </mat-form-field>
 
     </div>
-    <div class="flex flex-col gap-3.5 basis-1/2 w-1/2 pr-36">
+    <div class="flex flex-col gap-3.5 basis-1/2 lg:w-1/2 lg:px-11 px-4">
       <mat-form-field appearance="outline">
         <mat-label>ارقام الهاتف</mat-label>
         <mat-chip-grid #chipGrid aria-label="ادخل رقم الهاتف">
@@ -142,7 +141,7 @@
     </div>
   </div>
   <button type="submit" mat-raised-button color="primary" (click)="submit()"
-          class=" mx-auto !block  text-2xl !px-12 !py-5 !rounded-2xl !h-auto font-bold">
+          class=" mx-auto !block  text-2xl !px-14 !py-5 !rounded-2xl !h-auto font-bold">
     {{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}حالة
   </button>
 

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RegionsRoutingModule } from './regions-routing.module';
-import { RegionsManagementComponent } from './regions-mangement/regions-management.component';
+import { LocationsRoutingModule } from './locations-routing.module';
+import { LocationsManagementComponent } from './locations-mangement/locations-management.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
@@ -16,11 +16,11 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [
-    RegionsManagementComponent
+    LocationsManagementComponent
   ],
     imports: [
         CommonModule,
-        RegionsRoutingModule,
+        LocationsRoutingModule,
         MatTableModule,
         MatSortModule,
         MatPaginatorModule,
@@ -32,4 +32,4 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         MatProgressBarModule
     ]
 })
-export class RegionsModule { }
+export class LocationsModule { }

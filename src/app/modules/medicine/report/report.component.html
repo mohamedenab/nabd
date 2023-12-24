@@ -1,0 +1,127 @@
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">تقرير الادوية</h3>
+<div class="flex justify-end">
+  <button mat-raised-button color="primary" class=" mt-10  !block ml-10 relative" (click)="downloadExcel()">
+  <span class="flex gap-2.5 relative">
+              <mat-icon aria-hidden="false" fontIcon="download"></mat-icon>
+تحميل التقرير              </span>
+  </button>
+
+  <button mat-raised-button color="primary" class=" mt-10  !block ml-10 relative" (click)="generateReport()">
+  <span class="flex gap-2.5 relative">
+              <mat-icon aria-hidden="false" fontIcon="edit_document"></mat-icon>
+انشاء تقرير جديد              </span>
+  </button>
+
+</div>
+<mat-form-field class="w-full mt-10 px-10" appearance="outline">
+  <mat-label> بحث باسم الدواء</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+</mat-form-field>
+
+<div class=" mt-10 px-10">
+  <div class="mat-elevation-z8 ">
+    <div class="w-full overflow-x-auto">
+      <table mat-table [dataSource]="dataSource" class="rounded-lg">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> اسم الدواء</th>
+          <td mat-cell *matCellDef="let element"><a
+            [routerLink]="'../'+element.medicineId+'/patients'"> {{element.medicine}} </a></td>
+        </ng-container>
+        <ng-container matColumnDef="number">
+          <th mat-header-cell *matHeaderCellDef>عدد المطلوب</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.numberBox}}علبة
+            /{{element.numberPastille}}شريط
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>إجمالي السعر</th>
+          <td mat-cell *matCellDef="let element"> {{element.totalPrice}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> إجراءات</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="gap-3.5 flex flex-col lg:flex-row">
+              <button mat-raised-button color="primary" (click)="openReplaceMedicine(element)">
+              <span class="flex gap-2.5">
+              <mat-icon aria-hidden="false" fontIcon="sync"></mat-icon>
+              استبدال
+              </span>
+              </button>
+              <button mat-raised-button color="primary" class="lg:!h-auto !h-[45px]  lg:!py-0 !px-3 !py-2"
+                      (click)="openEditMedicine(element)">
+                              <span class="flex gap-2.5">
+                              <mat-icon aria-hidden="false" class="!w-8" fontIcon="edit"></mat-icon>
+                              تعديل الكمية
+                              </span>
+              </button>
+              <button mat-raised-button color="warn" (click)="deleteMedicine(element)">
+              <span class="flex gap-2.5">
+              <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon>
+              حذف
+              </span>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    </div>
+    <mat-paginator class="w-full" [length]="totalElements"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[ 10, 25, 100]">
+    </mat-paginator>
+  </div>
+</div>
+
+<ng-template #replaceTemp>
+  <div class="flex flex-col justify-center py-16 px-24 relative">
+    <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" [mat-dialog-close]="">
+      <mat-icon>close</mat-icon>
+    </button>
+    <form [formGroup]="replaceForm">
+      <app-medicines-search [control]="replaceForm.get('firstId')!"></app-medicines-search>
+      <app-medicines-search [control]="replaceForm.get('secondId')!"></app-medicines-search>
+
+    </form>
+    <button mat-raised-button color="primary" class=" mt-10 " [disabled]="!replaceForm.valid"
+            (click)="replaceMedicine()">
+      استبدال الدواء
+    </button>
+
+  </div>
+
+</ng-template>
+<ng-template #editTemp>
+  <div class="flex flex-col justify-center py-16 px-24 relative">
+    <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" [mat-dialog-close]="">
+      <mat-icon>close</mat-icon>
+    </button>
+    <h2 class="text-lg text-center mb-8">{{editMedicineObj.medicine}}</h2>
+    <form [formGroup]="editAmountForm" class="grid grid-cols-2	gap-4">
+      <mat-form-field class="col-span-1 " appearance="outline">
+        <mat-label>عدد العلب</mat-label>
+        <input matInput formControlName="numberBox" type="number">
+      </mat-form-field>
+      <mat-form-field class="col-span-1 " appearance="outline">
+        <mat-label>عدد الشرائط</mat-label>
+        <input matInput formControlName="numberPastille" type="number">
+      </mat-form-field>
+
+    </form>
+    <button mat-raised-button color="primary" class="mt-8" [disabled]="!replaceForm.valid"
+            (click)="editMedicine()">
+      تعديل
+    </button>
+
+  </div>
+
+</ng-template>
+

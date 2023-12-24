@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./pages/home/home.component";
-import {RegionsModule} from "../locations/regions.module";
+import {LocationsModule} from "../locations/locations.module";
 import {roleGuard} from "../../core/guards/role.guard";
 
 const routes: Routes = [
   {
     path: '', component: HomeComponent, children: [
-      {path: 'regions', loadChildren: () => import('../locations/regions.module').then(m => m.RegionsModule)},
+      {path: 'locations', loadChildren: () => import('../locations/locations.module').then(m => m.LocationsModule)},
       {path: 'patients', loadChildren: () => import('../patients/patients.module').then(m => m.PatientsModule)},
       {
         path: 'medicines',

@@ -1,22 +1,10 @@
-<nav class="fixed top-0 right-0 p-3 flex gap-7 shadow-lg	w-full items-center bg-white z-50 flex-wrap ">
-  <img src="assets/images/logo.png" class="w-16" alt="">
-  <button mat-button [matMenuTriggerFor]="menu" dir="ltr">
-    المناطق
-    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="expand_more"></mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/regions/management">الكل</button>
+<nav class="fixed top-0 right-0 p-3 flex gap-7 shadow-lg w-full items-center bg-white z-[2]">
+    <img src="assets/images/logo.png" class="w-16" alt="">
+    <ng-container *ngIf="this.innerWidth > 768">
+        <app-navbar-content class="w-full"></app-navbar-content>
+    </ng-container>
+    <button mat-button class="mr-auto" *ngIf="this.innerWidth < 768" (click)="sidenav.toggle()">
+        <mat-icon aria-hidden="false" fontIcon="menu"></mat-icon>
 
-    <button mat-menu-item *ngFor="let location of locations"
-            routerLink="/regions/{{location.id}}">{{location.locationName}}</button>
-
-  </mat-menu>
-  <a routerLink="/medicines/management" *ngIf="authService.isUserSuperAdmin()">الادوية</a>
-  <a routerLink="/medicines/report" *ngIf="!authService.isUserNormal">تقرير الادوية</a>
-  <a routerLink="/users/management" *ngIf="authService.isUserSuperAdmin()">ادارة المستخدمين</a>
-  <a routerLink="/regions/management">ادارة المناطق</a>
-  <button mat-icon-button [autofocus]="false" color="warn" class="mr-auto !inline-flex justify-center items-center"
-          (click)="logout()">
-    <mat-icon>logout</mat-icon>
-  </button>
+    </button>
 </nav>

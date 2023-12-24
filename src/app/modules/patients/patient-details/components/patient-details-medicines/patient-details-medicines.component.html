@@ -1,7 +1,8 @@
-<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white mb-10 mt-10">الأدوية</h3>
-<div class="flex justify-end">
-  <button mat-raised-button color="warn" (click)="openDeleteMedicineSpecialization()">حذف تخصص</button>
-  <button mat-raised-button color="primary" class="mx-5" (click)="openAddMedicine()">اضافة دواء</button>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-20  lg:block hidden">الأدوية</h3>
+<div class="border border-solid bg-white py-5 mx-5">
+<div class="flex lg:justify-end justify-center lg:px-10 px-5">
+  <button mat-raised-button color="warn" (click)="openDeleteMedicineSpecialization()">حذف الادوية لتخصص</button>
+  <button mat-raised-button color="primary" class="mr-5" (click)="openAddMedicine()">اضافة دواء</button>
 </div>
 <div class=" mt-10 px-10 w-full flex flex-col">
   <div class="mat-elevation-z8 w-full overflow-x-auto">
@@ -31,9 +32,15 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="repeat">
-        <th mat-header-cell *matHeaderCellDef>بكرر كل عدد</th>
+        <th mat-header-cell *matHeaderCellDef>يكرر كل</th>
         <td mat-cell *matCellDef="let element">
-          {{element.repetition}}
+          {{element.repetition === 1 ? 'شهر':element.repetition === 2 ?  'شهرين': element.repetition+' اشهر'}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="arrayOfMonths">
+        <th mat-header-cell *matHeaderCellDef>الشهور المجدولة</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.arrayOfMonths}}
         </td>
       </ng-container>
       <ng-container matColumnDef="action">
@@ -67,28 +74,28 @@
           (click)="showAll?getMedicine():showAllMedicine()">{{showAll ? 'اظهار ادوية الشهر الحالي فقط' : 'اظهار كافة الادوية' }}</button>
 
 </div>
-
+</div>
 <ng-template #addMedicineTemp>
-  <div class="flex flex-col justify-center py-16 px-24 relative">
+  <div class="flex flex-col justify-center lg:py-16 pt-16 pb-8 relative">
     <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" [mat-dialog-close]="">
       <mat-icon>close</mat-icon>
     </button>
-    <form [formGroup]="addMedicine" class="flex flex-col">
+    <form [formGroup]="addMedicine" class="flex flex-col lg:h-auto h-[60vh] lg:px-24 px-8 overflow-y-auto">
       <!--      <mat-form-field class="w-full" appearance="outline">-->
       <!--        <mat-label>إسم الدواء</mat-label>-->
       <!--        <input matInput formControlName="medicineId">-->
       <!--      </mat-form-field>-->
       <app-medicines-search [control]="addMedicine.get('medicineId')!"></app-medicines-search>
-      <div class="flex gap-3">
-        <mat-form-field class="basis-1/5" appearance="outline">
+      <div class="grid grid-flow-row lg:grid-cols-5 grid-cols-2 gap-3">
+        <mat-form-field class="col-span-1 " appearance="outline">
           <mat-label>عدد العلب</mat-label>
           <input matInput formControlName="numberBox" type="number">
         </mat-form-field>
-        <mat-form-field class="basis-1/5" appearance="outline">
+        <mat-form-field class="col-span-1 " appearance="outline">
           <mat-label>عدد الشرائط</mat-label>
           <input matInput formControlName="numberPastille" type="number">
         </mat-form-field>
-        <mat-form-field class="basis-1/5" appearance="outline">
+        <mat-form-field class="col-span-1 " appearance="outline">
           <mat-label>الـــتخصص</mat-label>
           <mat-select formControlName="specialization">
             <mat-option *ngFor="let specialization of specializations" [value]="specialization.id">
@@ -96,7 +103,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="basis-1/5" appearance="outline">
+        <mat-form-field class="col-span-1 " appearance="outline">
           <mat-label>يتم تكراره كل عدد اشهر</mat-label>
           <input matInput formControlName="repetition">
         </mat-form-field>
@@ -105,7 +112,7 @@
         <!--          <input matInput formControlName="startIn">-->
         <!--        </mat-form-field>-->
         <!--        <p-calendar placeholder="بداية من شهر" formControlName="startIn" view="month" dateFormat="mm/yy" [readonlyInput]="true"></p-calendar>-->
-        <mat-form-field class="basis-1/5" appearance="outline">
+        <mat-form-field class="lg:col-span-1 col-span-2" appearance="outline">
           <mat-label>بداية من شهر</mat-label>
           <input matInput [matDatepicker]="dp" formControlName="startIn">
           <mat-hint>MM/YYYY</mat-hint>
@@ -123,7 +130,7 @@
       </mat-form-field>
     </form>
 
-    <button mat-raised-button color="primary" class=" mt-10 " [disabled]="addMedicine.invalid"
+    <button mat-raised-button color="primary" class=" mt-10 mx-2" [disabled]="addMedicine.invalid"
             (click)="editId!==''?editMedicine():submitAddMedicine()">
       إضافة دواء
     </button>

@@ -6,50 +6,50 @@
 $dark-primary-text: rgba(black, 0.87);
 $light-primary-text: white;
 $nabd-palette: (
-  50: #e2edf6,
-  100: #b6d2ea,
-  200: #85b5dc,
-  300: #5497cd,
-  400: #2f80c3,
-  500: #0a6ab8,
-  600: #0962b1,
-  700: #0757a8,
-  800: #054da0,
-  900: #033c91,
-  A100: #bdd3ff,
-  A200: #8ab1ff,
-  A400: #578fff,
-  A700: #3d7eff,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $light-primary-text,
-    400: $light-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-    A100: $dark-primary-text,
-    A200: $light-primary-text,
-    A400: $light-primary-text,
-    A700: $light-primary-text,
-  )
+        50: #e2edf6,
+        100: #b6d2ea,
+        200: #85b5dc,
+        300: #5497cd,
+        400: #2f80c3,
+        500: #0a6ab8,
+        600: #0962b1,
+        700: #0757a8,
+        800: #054da0,
+        900: #033c91,
+        A100: #bdd3ff,
+        A200: #8ab1ff,
+        A400: #578fff,
+        A700: #3d7eff,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $light-primary-text,
+                400: $light-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $light-primary-text,
+                A400: $light-primary-text,
+                A700: $light-primary-text,
+        )
 );
 $nabd-primary: mat.define-palette($nabd-palette);
 $nabd-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $nabd-warn: mat.define-palette(mat.$red-palette);
 $nabd-typo: mat.define-typography-config(
-  $font-family: 'Almarai'
+        $font-family: 'Almarai'
 );
 $nabd-theme: mat.define-light-theme((
-  color: (
-    primary: $nabd-primary,
-    accent: $nabd-accent,
-    warn: $nabd-warn,
-  ),
-  typography:$nabd-typo
+        color: (
+                primary: $nabd-primary,
+                accent: $nabd-accent,
+                warn: $nabd-warn,
+        ),
+        typography:$nabd-typo
 ));
 
 @include mat.all-component-themes($nabd-theme);
@@ -126,7 +126,6 @@ a.link {
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   background-color: #F5F5F5;
 }
@@ -137,7 +136,11 @@ a.link {
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  border-radius: 8px;
   background-color: #5497cd;
+}
+
+
+.mat-mdc-text-field-wrapper, .ck.ck-editor__editable_inline {
+  background-color: white;
 }

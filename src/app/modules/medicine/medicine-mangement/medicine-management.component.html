@@ -1,102 +1,103 @@
-<h3 class="text-2xl mx-auto w-fit font-bold rounded-xl bg-primary-400 p-2.5 text-white ">إدارة الاادوية</h3>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">إدارة الادوية</h3>
 <button mat-raised-button color="primary" class=" mt-10 mr-auto !block ml-10 relative"
         *ngIf="authService.isUserSuperAdmin()">
   <span class="flex gap-2.5 relative">
-  <input type="file" class="absolute opacity-0 w-full h-full" (change)="upload($event)">
               <mat-icon aria-hidden="false" fontIcon="upload"></mat-icon>
+  <input type="file" class="absolute opacity-0 w-full h-full" (change)="upload($event)">
 رفع  قاعدة بيانات جديدة              </span>
 </button>
 
 <mat-form-field class="w-full mt-10 px-10" appearance="outline">
-  <mat-label> بحث باسم الدواء</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+    <mat-label> بحث باسم الدواء</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
 </mat-form-field>
 
 <div class=" mt-10 px-10">
-  <div class="mat-elevation-z8 w-full overflow-x-auto">
-    <table mat-table [dataSource]="dataSource" class="rounded-lg">
+    <div class="mat-elevation-z8 w-full overflow-x-auto">
+        <table mat-table [dataSource]="dataSource" class="rounded-lg">
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> اسم الدواء</th>
-        <td mat-cell *matCellDef="let element"> {{element.nameInEng}} </td>
-      </ng-container>
-      <ng-container matColumnDef="number">
-        <th mat-header-cell *matHeaderCellDef>عدد الشرائط</th>
-        <td mat-cell *matCellDef="let element"> {{element.numberOfPastilleInEachBox}} </td>
-      </ng-container>
-      <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef>السعر</th>
-        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-      </ng-container>
-      <ng-container matColumnDef="usage">
-        <th mat-header-cell *matHeaderCellDef>المادة الفعالة</th>
-        <td mat-cell
-            *matCellDef="let element"> {{element.activeSubstance !== 'null' ? element.activeSubstance : ''}} </td>
-      </ng-container>
-      <ng-container matColumnDef="noPatient">
-        <th mat-header-cell *matHeaderCellDef>عدد الحالات</th>
-        <td mat-cell *matCellDef="let element"> {{element.numberOfPatientTakeIt}} </td>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>حالة الدواء</th>
-        <td mat-cell *matCellDef="let element"> {{element.medicineStatus}} </td>
-      </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> اسم الدواء</th>
+                <td mat-cell *matCellDef="let element"><a
+                        [routerLink]="'../'+element.id+'/patients'"> {{element.nameInEng}} </a></td>
+            </ng-container>
+            <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef>عدد الشرائط</th>
+                <td mat-cell *matCellDef="let element"> {{element.numberOfPastilleInEachBox}} </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>السعر</th>
+                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+            <ng-container matColumnDef="usage">
+                <th mat-header-cell *matHeaderCellDef>المادة الفعالة</th>
+                <td mat-cell
+                    *matCellDef="let element"> {{element.activeSubstance !== 'null' ? element.activeSubstance : ''}} </td>
+            </ng-container>
+            <ng-container matColumnDef="noPatient">
+                <th mat-header-cell *matHeaderCellDef>عدد الحالات</th>
+                <td mat-cell *matCellDef="let element"> {{element.numberOfPatientTakeIt}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>حالة الدواء</th>
+                <td mat-cell *matCellDef="let element"> {{element.medicineStatus}} </td>
+            </ng-container>
 
-      <!--      <ng-container matColumnDef="name">-->
-      <!--        <th mat-header-cell *matHeaderCellDef> الموثق</th>-->
-      <!--        <td mat-cell *matCellDef="let element"> {{element.name}} </td>-->
-      <!--      </ng-container>-->
+            <!--      <ng-container matColumnDef="name">-->
+            <!--        <th mat-header-cell *matHeaderCellDef> الموثق</th>-->
+            <!--        <td mat-cell *matCellDef="let element"> {{element.name}} </td>-->
+            <!--      </ng-container>-->
 
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> إجراءات</th>
-        <td mat-cell *matCellDef="let element">
-          <div class="gap-3.5 flex">
-            <button mat-raised-button color="primary" (click)="openReplaceMedicine(element)">
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> إجراءات</th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gap-3.5 flex">
+                        <button mat-raised-button color="primary" (click)="openReplaceMedicine(element)">
               <span class="flex gap-2.5">
               <mat-icon aria-hidden="false" fontIcon="sync"></mat-icon>
               استبدال
               </span>
-            </button>
+                        </button>
 
-            <button mat-raised-button color="warn" (click)="deleteMedicine()">
+                        <button mat-raised-button color="warn" (click)="deleteMedicine(element)">
               <span class="flex gap-2.5">
               <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon>
               حذف
               </span>
-            </button>
+                        </button>
 
-          </div>
-        </td>
-      </ng-container>
+                    </div>
+                </td>
+            </ng-container>
 
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 
-    <mat-paginator [length]="totalElements"
-                   [pageSize]="10"
-                   [pageSizeOptions]="[ 10, 25, 100]">
-    </mat-paginator>
-  </div>
+        <mat-paginator [length]="totalElements"
+                       [pageSize]="10"
+                       [pageSizeOptions]="[ 10, 25, 100]">
+        </mat-paginator>
+    </div>
 </div>
 
 <ng-template #replaceTemp>
-  <div class="flex flex-col justify-center py-16 px-24 relative">
-    <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" [mat-dialog-close]="">
-      <mat-icon>close</mat-icon>
-    </button>
-    <form [formGroup]="replaceForm">
-      <app-medicines-search [control]="replaceForm.get('firstId')!"></app-medicines-search>
-      <app-medicines-search [control]="replaceForm.get('secondId')!"></app-medicines-search>
+    <div class="flex flex-col justify-center py-16 px-24 relative">
+        <button mat-icon-button class="!absolute top-2 left-2" [autofocus]="false" [mat-dialog-close]="">
+            <mat-icon>close</mat-icon>
+        </button>
+        <form [formGroup]="replaceForm">
+            <app-medicines-search [control]="replaceForm.get('firstId')!"></app-medicines-search>
+            <app-medicines-search [control]="replaceForm.get('secondId')!"></app-medicines-search>
 
-    </form>
-    <button mat-raised-button color="primary" class=" mt-10 " [disabled]="!replaceForm.valid"
-            (click)="replaceMedicine()">
-      استبدال الدواء
-    </button>
+        </form>
+        <button mat-raised-button color="primary" class=" mt-10 " [disabled]="!replaceForm.valid"
+                (click)="replaceMedicine()">
+            استبدال الدواء
+        </button>
 
-  </div>
+    </div>
 
 </ng-template>

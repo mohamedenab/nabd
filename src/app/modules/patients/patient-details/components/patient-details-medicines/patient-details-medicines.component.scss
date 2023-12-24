@@ -1,3 +1,6 @@
 .mat-column-notes {
   max-width: 20vw;
+  @media (max-width: 768px) {
+    max-width: inherit;
+  }
 }

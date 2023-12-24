@@ -9,11 +9,11 @@ import {LocationService} from "../../../core/services/location.service";
 import {AuthService} from "../../../core/services/auth.service";
 
 @Component({
-  selector: 'app-regions-management',
-  templateUrl: './regions-management.component.html',
-  styleUrls: ['./regions-management.component.scss'],
+  selector: 'app-Locations-management-management',
+  templateUrl: './locations-management.component.html',
+  styleUrls: ['./locations-management.component.scss'],
 })
-export class RegionsManagementComponent implements OnInit, AfterViewInit {
+export class LocationsManagementComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['region', 'action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   regionName = ''

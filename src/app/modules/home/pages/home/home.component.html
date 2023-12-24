@@ -1,4 +1,11 @@
-<app-navbar></app-navbar>
-<div class="py-40 md:py-20">
-  <router-outlet></router-outlet>
-</div>
+<mat-drawer-container [hasBackdrop]="true">
+
+    <mat-drawer-content>
+        <app-navbar [sidenav]="sidenav"></app-navbar>
+        <div class="py-10 md:py-20">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+    <mat-drawer #drawer [mode]="'over'" [position]="'end'"><app-navbar-content></app-navbar-content></mat-drawer>
+
+</mat-drawer-container>

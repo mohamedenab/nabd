@@ -141,11 +141,11 @@ export class CreatePatientComponent implements OnInit {
     formData['mobileNumbers'] = this.mobileNumbers
     if (this.router.url.includes('edit')) {
       this.patientService.editPatient( this.route.snapshot.paramMap.get('id')!,formData).subscribe((res) => {
-        this.router.navigate(['/regions/' + formData.locationsId!])
+        this.router.navigate(['/locations/' + formData.locationsId!])
       })
     } else {
       this.patientService.createPatient(formData).subscribe((res) => {
-        this.router.navigate(['/regions/' + formData.locationsId!])
+        this.router.navigate(['/locations/' + formData.locationsId!])
       })
     }
 

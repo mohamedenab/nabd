@@ -30,7 +30,7 @@ export class LoginComponent {
       localStorage.setItem('token', res.accessToken)
       localStorage.setItem('userName', res.userName)
       localStorage.setItem('role', res.role)
-      this._router.navigate(['/regions'])
+      this._router.navigate(['/locations'])
     })
   }
 }

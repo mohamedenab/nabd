@@ -12,10 +12,10 @@ import {DeleteWarningComponent} from "../../../../../shared/components/delete-wa
   templateUrl: './patient-details-history.component.html',
   styleUrls: ['./patient-details-history.component.scss']
 })
-export class PatientDetailsHistoryComponent {
+export class PatientDetailsHistoryComponent implements OnInit {
   @Input() history: patientHistory[] = [];
-  @Input() months: string[] ;
-  @Input() years: string[] ;
+  @Input() months: string[];
+  @Input() years: string[];
   historyFrom = this.fb.group({
     month: ['', [Validators.required]],
     year: ['', [Validators.required]],
@@ -32,12 +32,22 @@ export class PatientDetailsHistoryComponent {
 
   constructor(private dialog: MatDialog, private fb: FormBuilder, private patientService: PatientService, private toast: HotToastService) {
     const date = new Date();
-    this.historyFrom.get('month')?.setValue((date.getMonth() + 1).toString())
-    this.historyFrom.get('year')?.setValue((date.getFullYear()).toString())
+    this.historyFrom.get('year')?.setValue((date.getFullYear()).toString());
+    this.historyFrom.get('month')?.setValue((date.getMonth() + 1).toString());
+  }
+
+  ngOnInit() {
+    const date = new Date();
+    if (!this.months.includes((date.getMonth() + 1).toString())) {
+      this.months.push((date.getMonth() + 1).toString())
+    }
+    if (!this.years.includes((date.getFullYear()).toString())) {
+      this.years.push((date.getFullYear()).toString())
+    }
   }
 
   openHistory() {
-    this.dialog.open(this.addHistoryTemp, {width: '50vw', disableClose: false})
+    this.dialog.open(this.addHistoryTemp, {panelClass: ['lg:w-[50vw]', 'w-[85vw]'], disableClose: false})
   }
 
   submitAddHistory() {
@@ -62,11 +72,13 @@ export class PatientDetailsHistoryComponent {
       data: {message: `هل انت متاكد انك تريد حذف هذا التوثيق`}
     })
     dialogRef.afterClosed().subscribe((res) => {
-      this.patientService.deleteHistory(id.toString()).subscribe((res) => {
-        this.getHistory();
-        this.toast.success('تم حذف التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
+      if (res.dismiss) {
+        this.patientService.deleteHistory(id.toString()).subscribe((res) => {
+          this.getHistory();
+          this.toast.success('تم حذف التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
 
-      })
+        })
+      }
     })
 
   }
