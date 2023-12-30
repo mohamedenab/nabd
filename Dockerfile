@@ -10,5 +10,4 @@ RUN chown -R 1013690000:0 /.npm
 RUN chown -R 1013690000:0 /app/.angular
 USER 1013690000
 COPY . .
-EXPOSE 4201
 CMD ["npm", "start"]
