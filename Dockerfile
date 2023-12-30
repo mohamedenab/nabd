@@ -9,9 +9,9 @@ RUN NODE_OPTIONS="--max-old-space-size=4096" npm install
 
 COPY . .
 
-# Build Angular app
+# Build Angular app for production
 RUN npm install -g @angular/cli && \
-    npm build
+    ng build --configuration production
 
 # Stage 2: Create Nginx Image
 FROM nginx:alpine
@@ -22,5 +22,5 @@ COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
 # Copy the built Angular app to the Nginx directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80
+# Expose port 4200
 EXPOSE 4200
