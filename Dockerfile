@@ -11,7 +11,7 @@ COPY . .
 
 # Build Angular app
 RUN npm install -g @angular/cli && \
-    ng build --prod
+    npm build
 
 # Stage 2: Create Nginx Image
 FROM nginx:alpine
