@@ -5,13 +5,16 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN NODE_OPTIONS="--max-old-space-size=4096" npm install
+# Increase Node.js heap memory
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+
+RUN npm install
 
 COPY . .
 
-# Build Angular app for production
+# Build Angular app for production without AOT
 RUN npm install -g @angular/cli && \
-    ng build --configuration production
+    ng build --prod --aot=false
 
 # Stage 2: Create Nginx Image
 FROM nginx:alpine
