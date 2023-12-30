@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HistoryType, patientHistory} from "../../../../../core/interfaces/patient";
 import {PatientService} from "../../../../../core/services/patient.service";
 import {ActivatedRoute} from "@angular/router";
@@ -16,15 +16,8 @@ export class PatientDetailsHistoryComponent implements OnInit {
   @Input() history: patientHistory[] = [];
   @Input() months: string[];
   @Input() years: string[];
-  historyFrom = this.fb.group({
-    month: ['', [Validators.required]],
-    year: ['', [Validators.required]],
-  })
-  addHistory = this.fb.group({
-    historyType: ['', [Validators.required]],
-    comment: ['', [Validators.required]],
-    link: ['', [Validators.required]],
-  })
+  historyFrom: FormGroup;
+  addHistory: FormGroup;
   historyType = HistoryType
   @ViewChild('addHistoryTemp') addHistoryTemp!: TemplateRef<any>;
   editId: string;
@@ -34,6 +27,15 @@ export class PatientDetailsHistoryComponent implements OnInit {
     const date = new Date();
     this.historyFrom.get('year')?.setValue((date.getFullYear()).toString());
     this.historyFrom.get('month')?.setValue((date.getMonth() + 1).toString());
+    this.historyFrom = this.fb.group({
+      month: ['', [Validators.required]],
+      year: ['', [Validators.required]],
+    })
+    this.addHistory = this.fb.group({
+      historyType: ['', [Validators.required]],
+      comment: ['', [Validators.required]],
+      link: ['', [Validators.required]],
+    })
   }
 
   ngOnInit() {

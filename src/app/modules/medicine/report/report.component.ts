@@ -5,7 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatDialog} from "@angular/material/dialog";
 import {HotToastService} from "@ngneat/hot-toast";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {catchError, map, of, startWith, switchMap} from "rxjs";
 import {Medicine} from "../../../core/interfaces/medicine";
 import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
@@ -26,21 +26,22 @@ export class ReportComponent implements AfterViewInit {
   isLoading = true;
   replacedId: string = ''
   editMedicineObj: any = {}
-  replaceForm = this.fb.group({
-    firstId: [{value: '', disabled: true}],
-    secondId: '',
-  })
-  editAmountForm = this.fb.group({
-    numberBox: ['', [Validators.required]],
-    numberPastille: ['', [Validators.required]]
-  })
+  replaceForm: FormGroup;
+  editAmountForm: FormGroup;
   @ViewChild('replaceTemp') replaceTemp!: TemplateRef<any>;
   @ViewChild('editTemp') editTemp!: TemplateRef<any>;
   dialog: MatDialog = inject(MatDialog);
   private toast: HotToastService = inject(HotToastService);
 
   constructor(private fb: FormBuilder, private excelService: ExcelService) {
-
+    this.replaceForm = this.fb.group({
+      firstId: [{value: '', disabled: true}],
+      secondId: '',
+    })
+    this.editAmountForm = this.fb.group({
+      numberBox: ['', [Validators.required]],
+      numberPastille: ['', [Validators.required]]
+    })
   }
 
   ngAfterViewInit() {
