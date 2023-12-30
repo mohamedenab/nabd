@@ -1,3 +1,4 @@
+# Stage 1: Build Angular App
 FROM node:14-alpine as build
 
 WORKDIR /app
@@ -6,27 +7,20 @@ COPY package*.json ./
 
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm install
 
-RUN if [ ! -d "/.npm" ]; then mkdir /.npm; fi
-RUN if [ ! -d "/app/.angular" ]; then mkdir /app/.angular; fi
-
-RUN chown -R 1012140000:0 /.npm
-RUN chown -R 1012140000:0 /app/.angular
-
-USER 1012140000
-RUN rm -rf /etc/nginx/conf.d/default.conf
-
-COPY nginx-custom.conf /etc/nginx/conf.d/
-RUN npm install -g @angular/cli
-
-RUN npm install
-
 COPY . .
 
-RUN ng build --prod
+# Build Angular app
+RUN npm install -g @angular/cli && \
+    ng build --prod
 
+# Stage 2: Create Nginx Image
 FROM nginx:alpine
 
+# Copy the Nginx configuration
+COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built Angular app to the Nginx directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# Expose port 80
 EXPOSE 4200
-
