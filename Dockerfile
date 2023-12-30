@@ -1,32 +1,17 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14-alpine as build
-
-# Set the working directory in the container
+FROM node:16.14
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
-
-# Install Angular CLI
-RUN npm install -g @angular/cli
-
-# Install app dependencies
 RUN npm install
 
-# Copy the application files to the container
+RUN if [ ! -d "/.npm" ]; then mkdir /.npm; fi
+RUN if [ ! -d "/app/.angular" ]; then mkdir /app/.angular; fi
+
+RUN chown -R 1012140000:0 /.npm
+RUN chown -R 1012140000:0 /app/.angular
+ENV API_URL=https://clinic-reservation-back-git-amrmahmoud33-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+USER 1012140000
 COPY . .
+RUN chown -R 1013690000:0 /app/src/environments/environments.ts
+RUN sed -i "s|DEFAULT_API_URL|$API_URL|g" /app/src/environments/environments.ts
 
-# Build the Angular app
-RUN ng build --prod
-
-# Use a smaller base image for the final stage
-FROM nginx:alpine
-
-# Copy the compiled app from the build stage to the nginx folder
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Command to run the application
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]
