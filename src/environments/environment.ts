@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api/v1',
+  apiUrl: 'https://nabd-project-git-amrmahmoud33-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/api/v1',
   auth: 'api/v1/auth',
   locations: 'api/v1/locations',
   report: 'api/v1/report',
