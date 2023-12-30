@@ -146,7 +146,7 @@ export class ReportComponent implements AfterViewInit {
   }
 
   editMedicine() {
-    this.reportService.editReport(this.editMedicineObj.id, this.editAmountForm.value).subscribe((res) => {
+    this.reportService.editReport(this.editMedicineObj.medicineId, this.editAmountForm.value).subscribe((res) => {
       this.reportService.getReport(
         0,
         this.paginator.pageSize
