@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://nabd-project-git-amrmahmoud33-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/api/v1",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
