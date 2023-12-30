@@ -15,8 +15,6 @@ RUN chown -R 1012140000:0 /app/.angular
 USER 1012140000
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
-COPY dist/your-angular-app /usr/share/nginx/html
-
 COPY nginx-custom.conf /etc/nginx/conf.d/
 RUN npm install -g @angular/cli
 
