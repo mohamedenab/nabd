@@ -25,7 +25,7 @@ jobs:
         run: npm run build --prod
 
       - name: Deploy to DigitalOcean
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@latest
         with:
           host: 157.245.123.205
           username: mohamed3nab
