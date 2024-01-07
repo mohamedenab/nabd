@@ -14,7 +14,7 @@ COPY . .
 
 # Build Angular app for production without AOT
 RUN npm install -g @angular/cli
-RUN ng build --configuration production
+RUN ng serve
 
 # Stage 2: Create Nginx Image
 FROM nginx:alpine
