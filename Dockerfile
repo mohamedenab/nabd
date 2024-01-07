@@ -2,11 +2,11 @@ FROM nginx:1.15.9
 
 WORKDIR /app
 
-RUN apt-get update -yq \
-        && apt-get install -yq curl gnupg \
-        && curl -sL https://deb.nodesource.com/setup_16.x | bash \
-        && apt-get install -yq nodejs \
-        && apt-get clean
+# RUN apt-get update -yq \
+#         && apt-get install -yq curl gnupg \
+#         && curl -sL https://deb.nodesource.com/setup_16.x | bash \
+#         && apt-get install -yq nodejs \
+#         && apt-get clean
 
 COPY package.json .
 
