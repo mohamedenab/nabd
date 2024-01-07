@@ -1,29 +1,31 @@
-# Stage 1: Build Angular App
-FROM node:lts-alpine as build
+# Stage 1: Build the Angular app
+FROM node:14 AS builder
 
 WORKDIR /app
 
+# Copy package.json and package-lock.json to install dependencies
 COPY package*.json ./
 
-# Increase Node.js heap memory
-ENV NODE_OPTIONS="--max-old-space-size=8192"
-
+# Install dependencies
 RUN npm install
 
+# Copy the entire Angular project
 COPY . .
 
-# Build Angular app for production without AOT
-RUN npm install -g @angular/cli
-RUN ng serve
+# Build the Angular app
+RUN npm run build
 
-# Stage 2: Create Nginx Image
+# Stage 2: Create the final lightweight image
 FROM nginx:alpine
 
-# Copy the Nginx configuration
-COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
+# Copy the built Angular app from the builder stage to the Nginx server
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy the built Angular app to the Nginx directory
-COPY /dist /usr/share/nginx/html
+# Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 4200
-EXPOSE 4200
+# Expose port 80
+EXPOSE 80
+
+# Command to start Nginx
+CMD ["nginx", "-g", "daemon off;"]
