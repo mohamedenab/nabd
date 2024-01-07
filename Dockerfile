@@ -1,5 +1,5 @@
 # Stage 1: Build the Angular app
-FROM node:14 AS builder
+FROM node:lts-alpine as build
 
 WORKDIR /app
 
