@@ -1,9 +1,20 @@
-FROM node:16.14
+FROM nginx:1.15.9
+
 WORKDIR /app
-COPY package*.json ./
+
+RUN apt-get update -yq \
+        && apt-get install curl gnupg -yq \
+        && curl -sL https://deb.nodesource.com/setup_16.x | bash \
+        && apt-get install nodejs -yq
+
+COPY package.json .
+
 RUN npm install
-RUN npm install -g @angular/cli
-RUN node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng serve --disable-host-check
+COPY nginx.conf ../etc/nginx/nginx.conf
 COPY . .
 
-CMD ["npm", "start"]
+RUN npm run build
+
+RUN cp -r /app/dist/hash-pay/* /usr/share/nginx/html
+
+EXPOSE 80
