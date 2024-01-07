@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Specialization} from "../../../core/interfaces/specialization";
 import {PatientService} from "../../../core/services/patient.service";
 import {Patient} from "../../../core/interfaces/patient";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
   selector: 'app-create-patient',
@@ -50,6 +51,7 @@ export class CreatePatientComponent implements OnInit {
   public readonly router: Router = inject(Router);
   announcer = inject(LiveAnnouncer);
   private patientService: PatientService = inject(PatientService)
+  private toast: HotToastService = inject(HotToastService);
 
   constructor(private fb: FormBuilder) {
     this.createPatient = this.fb.group({
@@ -141,10 +143,12 @@ export class CreatePatientComponent implements OnInit {
     formData['mobileNumbers'] = this.mobileNumbers
     if (this.router.url.includes('edit')) {
       this.patientService.editPatient( this.route.snapshot.paramMap.get('id')!,formData).subscribe((res) => {
+        this.toast.success('تم تعديل المريض', {duration: 5000, position: "top-right", theme: "snackbar"});
         this.router.navigate(['/locations/' + formData.locationsId!])
       })
     } else {
       this.patientService.createPatient(formData).subscribe((res) => {
+        this.toast.success('تم انشاء المريض', {duration: 5000, position: "top-right", theme: "snackbar"});
         this.router.navigate(['/locations/' + formData.locationsId!])
       })
     }

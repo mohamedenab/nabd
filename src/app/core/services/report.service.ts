@@ -17,7 +17,9 @@ export class ReportService {
 
   editReport(id: string, data: any) {
     return this.http.put(`${this.baseUrl}/medicine/amount/${id}`,data)
-
+  }
+  deleteMedicine(id: string) {
+    return this.http.delete(`${this.baseUrl}/medicine/${id}`)
   }
 
   generateReport() {

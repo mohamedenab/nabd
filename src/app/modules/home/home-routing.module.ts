@@ -7,18 +7,19 @@ import {roleGuard} from "../../core/guards/role.guard";
 const routes: Routes = [
   {
     path: '', component: HomeComponent, children: [
+      {path: '', pathMatch: 'full', redirectTo: 'locations'},
       {path: 'locations', loadChildren: () => import('../locations/locations.module').then(m => m.LocationsModule)},
       {path: 'patients', loadChildren: () => import('../patients/patients.module').then(m => m.PatientsModule)},
       {
         path: 'medicines',
         loadChildren: () => import('../medicine/medicine.module').then(m => m.MedicineModule),
         canActivate: [roleGuard],
-        data: {role: 'ROLE_SU'},
+        data: {role: ['ROLE_SU','ROLE_AU']},
       },
       {
         path: 'users',
         canActivate: [roleGuard],
-        data: {role: 'ROLE_SU'},
+        data: {role: ['ROLE_SU']},
         loadChildren: () => import('../users/users.module').then(m => m.UsersModule)
       },
     ]

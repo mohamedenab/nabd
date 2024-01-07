@@ -11,6 +11,7 @@ import {LoaderInterceptor} from "./core/Interceptors/loader.interceptor";
 import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {GlobalErrorHandler} from './core/Interceptors/global-error-handler';
 import {EmptyResponseInterceptor} from "./core/Interceptors/empty-response-body-interceptor.resolver";
+import {ToastService} from "./core/services/toast.service";
 
 @NgModule({
   declarations: [
@@ -29,13 +30,15 @@ import {EmptyResponseInterceptor} from "./core/Interceptors/empty-response-body-
     useClass: AuthInterceptorService,
     multi: true
   },
-    {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandler,
-    },
+    {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true}, ToastService
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: GlobalErrorHandler,
+    // },
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(private toastService: ToastService) {
+  }
 }

@@ -24,9 +24,6 @@ export class PatientDetailsHistoryComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   constructor(private dialog: MatDialog, private fb: FormBuilder, private patientService: PatientService, private toast: HotToastService) {
-    const date = new Date();
-    this.historyFrom.get('year')?.setValue((date.getFullYear()).toString());
-    this.historyFrom.get('month')?.setValue((date.getMonth() + 1).toString());
     this.historyFrom = this.fb.group({
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
@@ -35,7 +32,11 @@ export class PatientDetailsHistoryComponent implements OnInit {
       historyType: ['', [Validators.required]],
       comment: ['', [Validators.required]],
       link: ['', [Validators.required]],
-    })
+    });
+    const date = new Date();
+    this.historyFrom.get('year')?.setValue((date.getFullYear()).toString());
+    this.historyFrom.get('month')?.setValue((date.getMonth() + 1).toString());
+
   }
 
   ngOnInit() {

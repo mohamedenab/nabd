@@ -34,6 +34,9 @@ export class ReportComponent implements AfterViewInit {
   private toast: HotToastService = inject(HotToastService);
 
   constructor(private fb: FormBuilder, private excelService: ExcelService) {
+    if (this.authService.isUserAdmin()) {
+      this.displayedColumns.pop()
+    }
     this.replaceForm = this.fb.group({
       firstId: [{value: '', disabled: true}],
       secondId: '',
@@ -73,6 +76,7 @@ export class ReportComponent implements AfterViewInit {
 
   generateReport() {
     this.reportService.generateReport().subscribe((res) => {
+      this.toast.success('تم انشاء تقرير جديد', {duration: 5000, position: "top-right", theme: "snackbar"});
     });
   }
 
@@ -84,17 +88,17 @@ export class ReportComponent implements AfterViewInit {
       }
     })
     dialogRef.afterClosed().subscribe((res) => {
-      // this.medicineService.deleteMedicine(medicine.id.toString()).subscribe((res) => {
-      //     this.toast.success('تم حذف الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
-      //     this.medicineService.getMedicines(
-      //         0,
-      //         this.paginator.pageSize
-      //     ).subscribe((res: any) => {
-      //         this.dataSource = new MatTableDataSource(res.data);
-      //         this.totalElements = res.totalElements;
-      //         this.isLoading = false;
-      //     })
-      // })
+      this.reportService.deleteMedicine(medicine.id.toString()).subscribe((res) => {
+          this.toast.success('تم حذف الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
+          this.reportService.getReport(
+              0,
+              this.paginator.pageSize
+          ).subscribe((res: any) => {
+              this.dataSource = new MatTableDataSource(res.data);
+              this.totalElements = res.totalElements;
+              this.isLoading = false;
+          })
+      })
     })
   }
 
@@ -119,6 +123,7 @@ export class ReportComponent implements AfterViewInit {
     this.replaceForm.get('firstId')?.setValue(medicine.medicine)
     dialogTemp.afterClosed().subscribe((res) => {
       this.replaceForm.reset()
+      this.toast.success('تم استبدال الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
     })
   }
 
@@ -157,6 +162,7 @@ export class ReportComponent implements AfterViewInit {
         this.isLoading = false;
         this.editAmountForm.reset()
         this.dialog.closeAll();
+        this.toast.success('تم تعديل الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
       })
     })
   }
@@ -176,6 +182,7 @@ export class ReportComponent implements AfterViewInit {
       const keysToRemove = ['id', 'medicineId'];
       const data = res.data.reportMedicineDto.map((obj: any) => this.removeKeys({...obj}, keysToRemove));
       this.excelService.exportToExcel(data, 'التقرير', 'Sheet1');
+      this.toast.success('تم تحميل التقرير', {duration: 5000, position: "top-right", theme: "snackbar"});
 
     })
   }

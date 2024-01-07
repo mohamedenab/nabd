@@ -11,7 +11,7 @@
                 routerLink="/locations/{{location.id}}" (click)="closeSideNav()">{{location.locationName}}</button>
 
     </mat-menu>
-    <a class="inline-flex items-center" routerLink="/medicines/management" (click)="closeSideNav()" *ngIf="authService.isUserSuperAdmin()">الادوية</a>
+    <a class="inline-flex items-center" routerLink="/medicines/management" (click)="closeSideNav()" *ngIf="!authService.isUserNormal()">الادوية</a>
     <a class="inline-flex items-center" routerLink="/medicines/report" (click)="closeSideNav()" *ngIf="!authService.isUserNormal()">تقرير
         الادوية</a>
     <a class="inline-flex items-center" routerLink="/users/management" (click)="closeSideNav()" *ngIf="authService.isUserSuperAdmin()">ادارة

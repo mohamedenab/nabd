@@ -12,105 +12,107 @@ import {Patient} from "../../../core/interfaces/patient";
 import {MedicineService} from "../../../core/services/medicine.service";
 import {PatientService} from "../../../core/services/patient.service";
 import {HotToastService} from "@ngneat/hot-toast";
+import {AuthService} from "../../../core/services/auth.service";
 
 const MEDICINE =
-    `
+  `
 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m678-134 46-46-64-64-46 46q-14 14-14 32t14 32q14 14 32 14t32-14Zm102-102 46-46q14-14 14-32t-14-32q-14-14-32-14t-32 14l-46 46 64 64ZM735-77q-37 37-89 37t-89-37q-37-37-37-89t37-89l148-148q37-37 89-37t89 37q37 37 37 89t-37 89L735-77ZM200-200v-560 560Zm0 80q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v245q-20-5-40-5t-40 3v-243H200v560h243q-3 20-3 40t5 40H200Zm280-670q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM280-600v-80h400v80H280Zm0 160v-80h400v34q-8 5-15.5 11.5T649-460l-20 20H280Zm0 160v-80h269l-49 49q-8 8-14.5 15.5T474-280H280Z"/></svg>
 `;
 
 @Component({
-    selector: 'app-patients-management',
-    templateUrl: './patients-management.component.html',
-    styleUrls: ['./patients-management.component.scss']
+  selector: 'app-patients-management',
+  templateUrl: './patients-management.component.html',
+  styleUrls: ['./patients-management.component.scss']
 })
 export class PatientsManagementComponent implements OnInit, AfterViewInit {
-    displayedColumns: string[] = ['name', 'phone', 'action'];
-    dataSource: MatTableDataSource<any> = new MatTableDataSource();
-    name = ''
-    isLoading = true;
-    totalElements = 10;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
-    public readonly route: ActivatedRoute = inject(ActivatedRoute);
-    public readonly router: Router = inject(Router);
-    private locationService: LocationService = inject(LocationService);
-    private medicineService: MedicineService = inject(MedicineService);
-    private patientService: PatientService = inject(PatientService);
-    private toast: HotToastService = inject(HotToastService);
+  displayedColumns: string[] = ['name', 'phone', 'action'];
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  name = ''
+  isLoading = true;
+  totalElements = 10;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
+  public readonly route: ActivatedRoute = inject(ActivatedRoute);
+  public readonly router: Router = inject(Router);
+  public authService: AuthService = inject(AuthService);
+  private locationService: LocationService = inject(LocationService);
+  private medicineService: MedicineService = inject(MedicineService);
+  private patientService: PatientService = inject(PatientService);
+  private toast: HotToastService = inject(HotToastService);
 
-    constructor(private dialog: MatDialog, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
-        iconRegistry.addSvgIconLiteral('medicine', sanitizer.bypassSecurityTrustHtml(MEDICINE));
+  constructor(private dialog: MatDialog, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIconLiteral('medicine', sanitizer.bypassSecurityTrustHtml(MEDICINE));
 
-    }
+  }
 
-    ngOnInit() {
-        this.route.data.subscribe((res: any) => {
-            this.name = res.name
+  ngOnInit() {
+    this.route.data.subscribe((res: any) => {
+      this.name = res.name
+    })
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoading = true;
+          return this.getPatient(
+          ).pipe(catchError(() => of(null)));
+        }),
+        map((data: any) => {
+          if (data == null) return [];
+          this.totalElements = data.totalElements;
+          this.isLoading = false;
+          return data.data;
         })
+      )
+      .subscribe((data) => {
+        this.dataSource = new MatTableDataSource(data);
+      });
+  }
+
+  getPatient() {
+    if (this.router.url.includes('locations')) {
+      return this.locationService.getPatient(
+        this.paginator.pageIndex,
+        this.paginator.pageSize,
+        this.route.snapshot.paramMap.get('id')!
+      )
+    } else {
+      return this.medicineService.getPatients(
+        this.route.snapshot.paramMap.get('id')!
+      )
     }
+  }
 
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
+  deletePatient(patient: Patient) {
+    let dialogRef = this.dialog.open(DeleteWarningComponent, {
+      disableClose: true,
+      data: {
+        message:
+          `هل انت متاكد انك تريد حذف ${patient.name} `
+      }
+    })
+    dialogRef.afterClosed().subscribe((res) => {
 
-        this.paginator.page
-            .pipe(
-                startWith({}),
-                switchMap(() => {
-                    this.isLoading = true;
-                    return this.getPatient(
-                    ).pipe(catchError(() => of(null)));
-                }),
-                map((data: any) => {
-                    if (data == null) return [];
-                    this.totalElements = data.totalElements;
-                    this.isLoading = false;
-                    return data.data;
-                })
-            )
-            .subscribe((data) => {
-                this.dataSource = new MatTableDataSource(data);
-            });
-    }
+    })
+  }
 
-    getPatient() {
-        if (this.router.url.includes('locations')) {
-            return this.locationService.getPatient(
-                this.paginator.pageIndex,
-                this.paginator.pageSize,
-                this.route.snapshot.paramMap.get('id')!
-            )
-        } else {
-            return this.medicineService.getPatients(
-                this.route.snapshot.paramMap.get('id')!
-            )
-        }
-    }
+  disablePatient(patient: Patient) {
+    let dialogRef = this.dialog.open(DeleteWarningComponent, {
+      disableClose: true,
+      data: {message: 'هل انت متاكد انك تريد تعطيل الحالة ' + patient.name + '؟'}
+    })
+    dialogRef.afterClosed().subscribe((res) => {
+      this.patientService.deactivatePatient(patient.id).subscribe((res) => {
+        this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
 
-    deletePatient(patient: Patient) {
-        let dialogRef = this.dialog.open(DeleteWarningComponent, {
-            disableClose: true,
-            data: {
-                message:
-                    `هل انت متاكد انك تريد حذف ${patient.name} `
-            }
-        })
-        dialogRef.afterClosed().subscribe((res) => {
-
-        })
-    }
-
-    disablePatient(patient: Patient) {
-        let dialogRef = this.dialog.open(DeleteWarningComponent, {
-            disableClose: true,
-            data: {message:  'هل انت متاكد انك تريد تعطيل الحالة ' + patient.name +'؟'}
-        })
-        dialogRef.afterClosed().subscribe((res) => {
-            this.patientService.deactivatePatient(patient.id).subscribe((res) => {
-                this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
-
-            })
-        })
-    }
+      })
+    })
+  }
 
 
 }

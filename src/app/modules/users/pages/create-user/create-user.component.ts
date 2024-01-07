@@ -6,6 +6,7 @@ import {map} from "rxjs";
 import {UsersService} from "../../../../core/services/users.service";
 import {AuthService} from "../../../../core/services/auth.service";
 import {User} from "../../../../core/interfaces/users";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
   selector: 'app-create-user',
@@ -23,6 +24,7 @@ export class CreateUserComponent implements OnInit {
   public readonly router: Router = inject(Router);
   private authService: AuthService = inject(AuthService);
   private userService: UsersService = inject(UsersService);
+  private toast: HotToastService = inject(HotToastService);
 
   constructor(private fb: FormBuilder) {
     this.createUser = this.fb.group({
@@ -60,9 +62,9 @@ export class CreateUserComponent implements OnInit {
 
   submit() {
     if (this.router.url.includes('create')) {
-
       this.authService.register(this.createUser.value).subscribe((res) => {
-
+        this.toast.success('تم انشاء المستخدم', {duration: 5000, position: "top-right", theme: "snackbar"});
+        this.router.navigate(['./'])
       })
     } else {
       if (this.createUser.value.password === '') {

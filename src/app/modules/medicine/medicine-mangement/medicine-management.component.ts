@@ -30,6 +30,9 @@ export class MedicineManagementComponent implements AfterViewInit {
   private toast: HotToastService = inject(HotToastService);
 
   constructor(private fb: FormBuilder) {
+    if (this.authService.isUserAdmin()) {
+      this.displayedColumns.pop()
+    }
     this.replaceForm = this.fb.group({
       firstId: [{value: '', disabled: true}],
       secondId: '',

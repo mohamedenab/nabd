@@ -6,7 +6,7 @@
 تحميل التقرير              </span>
   </button>
 
-  <button mat-raised-button color="primary" class=" mt-10  !block ml-10 relative" (click)="generateReport()">
+  <button mat-raised-button color="primary" class=" mt-10  !block ml-10 relative" (click)="generateReport()" *ngIf="authService.isUserSuperAdmin()">
   <span class="flex gap-2.5 relative">
               <mat-icon aria-hidden="false" fontIcon="edit_document"></mat-icon>
 انشاء تقرير جديد              </span>
@@ -44,7 +44,7 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> إجراءات</th>
           <td mat-cell *matCellDef="let element">
-            <div class="gap-3.5 flex flex-col lg:flex-row">
+            <div class="gap-3.5 flex flex-col lg:flex-row" >
               <button mat-raised-button color="primary" (click)="openReplaceMedicine(element)">
               <span class="flex gap-2.5">
               <mat-icon aria-hidden="false" fontIcon="sync"></mat-icon>
@@ -58,7 +58,7 @@
                               تعديل الكمية
                               </span>
               </button>
-              <button mat-raised-button color="warn" (click)="deleteMedicine(element)">
+              <button mat-raised-button color="warn" (click)="deleteMedicine(element)" >
               <span class="flex gap-2.5">
               <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon>
               حذف

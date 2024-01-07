@@ -1,6 +1,7 @@
 export interface Patient {
-  id:string;
+  id: string;
   name: string;
+  locationDto: { id: number, locationName: string };
   nameOfParent: string;
   nationalID: string;
   numberOfFamilyMembers: number;
