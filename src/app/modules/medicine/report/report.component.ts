@@ -77,6 +77,14 @@ export class ReportComponent implements AfterViewInit {
   generateReport() {
     this.reportService.generateReport().subscribe((res) => {
       this.toast.success('تم انشاء تقرير جديد', {duration: 5000, position: "top-right", theme: "snackbar"});
+      this.reportService.getReport(
+        this.paginator.pageIndex,
+        this.paginator.pageSize
+      ).subscribe((data:any) => {
+        this.totalElements = data.totalElements;
+        this.isLoading = false;
+        this.dataSource =   new MatTableDataSource(data.data.reportMedicineDto);
+      })
     });
   }
 
@@ -89,15 +97,15 @@ export class ReportComponent implements AfterViewInit {
     })
     dialogRef.afterClosed().subscribe((res) => {
       this.reportService.deleteMedicine(medicine.id.toString()).subscribe((res) => {
-          this.toast.success('تم حذف الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
-          this.reportService.getReport(
-              0,
-              this.paginator.pageSize
-          ).subscribe((res: any) => {
-              this.dataSource = new MatTableDataSource(res.data);
-              this.totalElements = res.totalElements;
-              this.isLoading = false;
-          })
+        this.toast.success('تم حذف الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
+        this.reportService.getReport(
+          0,
+          this.paginator.pageSize
+        ).subscribe((res: any) => {
+          this.dataSource = new MatTableDataSource(res.data);
+          this.totalElements = res.totalElements;
+          this.isLoading = false;
+        })
       })
     })
   }

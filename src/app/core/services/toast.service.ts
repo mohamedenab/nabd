@@ -49,7 +49,7 @@ export class ToastService {
 
   private showToast(message: string): void {
     this.toast.close()
-    this.toast.info(message, {duration: 5000, theme: "snackbar"});
+    this.toast.info(message, {duration: 10000, theme: "snackbar"});
   }
 
   private showRandomToast(): void {

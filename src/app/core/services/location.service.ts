@@ -4,44 +4,44 @@ import {environment} from "../../../environments/environment";
 import {map} from "rxjs";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class LocationService {
-    baseUrl = environment.locations
+  baseUrl = environment.locations
 
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    createLocation(body: any) {
-        return this.http.post(`${this.baseUrl}`, body)
-    }
+  createLocation(body: any) {
+    return this.http.post(`${this.baseUrl}`, body)
+  }
 
-    getLocations(pageNo: number, pageSize: number) {
-        return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=locationName`)
-    }
+  getLocations(pageNo: number, pageSize: number) {
+    return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=locationName`)
+  }
 
-    getLocation(id: string) {
-        return this.http.get(`${this.baseUrl}/${id}`).pipe(
-            map((res: any) => {
-                return res.data.locationName
-            })
-        )
-    }
+  getLocation(id: string) {
+    return this.http.get(`${this.baseUrl}/${id}`).pipe(
+      map((res: any) => {
+        return res.data.locationName
+      })
+    )
+  }
 
-    getPatient(pageNo: number, pageSize: number, id: string) {
-        return this.http.get(`${this.baseUrl}/${id}/patients?pageNo=${pageNo}&pageSize=${pageSize}`)
+  getPatient(pageNo: number, pageSize: number, id: string) {
+    return this.http.get(`${this.baseUrl}/${id}/patients?pageNo=${pageNo}&pageSize=${pageSize}`)
 
-    }
+  }
 
-    addLocations(name: string) {
-        return this.http.post(`${this.baseUrl}`, {name: name})
-    }
+  editLocations(name: string, id: string) {
+    return this.http.post(`${this.baseUrl}/${id}`, {locationName: name})
+  }
 
-    deleteLocations(id: number) {
-        return this.http.delete(`${this.baseUrl}`)
-    }
+  deleteLocations(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`)
+  }
 
-    printLocation(id: number) {
-        return this.http.get(`${this.baseUrl}`)
-    }
+  printLocation(id: number) {
+    return this.http.get(`${this.baseUrl}`)
+  }
 }

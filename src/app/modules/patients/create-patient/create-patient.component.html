@@ -1,4 +1,6 @@
-<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">{{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}حالة</h3>
+<h3
+  class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">{{router.url.includes("edit") ? 'تعديل ' : 'إضافة '}}
+  حالة</h3>
 
 <form [formGroup]="createPatient">
   <div class="flex px-4 pb-4 lg:flex-row flex-col">
@@ -110,6 +112,11 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="createPatient.get('thereInsurance')?.value === 'STATE_EXPENSE'">
+
+        <mat-label>تاريخ بداية القرار</mat-label>
+        <input matInput formControlName="dateOfBeginningOfDecision">
+      </mat-form-field>
       <mat-form-field appearance="outline">
 
         <mat-label>اسم المتابع</mat-label>
@@ -120,11 +127,7 @@
         <mat-label>رقم هاتف المتابع</mat-label>
         <input matInput formControlName="volunteerMobileNumber">
       </mat-form-field>
-      <mat-form-field appearance="outline">
 
-        <mat-label>تاريخ بداية القرار</mat-label>
-        <input matInput formControlName="dateOfBeginningOfDecision">
-      </mat-form-field>
       <mat-form-field appearance="outline">
 
         <mat-label>تاريخ بداية المساعدة</mat-label>

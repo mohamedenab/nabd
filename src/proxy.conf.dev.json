@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:8080",
+    "target": "https://nabd-back-q3ux3.ondigitalocean.app/",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

@@ -74,8 +74,7 @@
               "browserTarget": "nabd:build:production"
             },
             "development": {
-              "browserTarget": "nabd:build:development",
-              "proxyConfig": "./src/proxy.conf.dev.json"
+              "browserTarget": "nabd:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -64,7 +64,7 @@ export class CreateUserComponent implements OnInit {
     if (this.router.url.includes('create')) {
       this.authService.register(this.createUser.value).subscribe((res) => {
         this.toast.success('تم انشاء المستخدم', {duration: 5000, position: "top-right", theme: "snackbar"});
-        this.router.navigate(['./'])
+        this.router.navigate(['./users'])
       })
     } else {
       if (this.createUser.value.password === '') {

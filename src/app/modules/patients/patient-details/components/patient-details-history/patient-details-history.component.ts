@@ -31,7 +31,7 @@ export class PatientDetailsHistoryComponent implements OnInit {
     this.addHistory = this.fb.group({
       historyType: ['', [Validators.required]],
       comment: ['', [Validators.required]],
-      link: ['', [Validators.required]],
+      link: [''],
     });
     const date = new Date();
     this.historyFrom.get('year')?.setValue((date.getFullYear()).toString());

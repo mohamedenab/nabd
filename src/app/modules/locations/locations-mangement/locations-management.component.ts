@@ -7,6 +7,7 @@ import {ActivatedRoute} from "@angular/router";
 import {catchError, map, of, startWith, switchMap} from "rxjs";
 import {LocationService} from "../../../core/services/location.service";
 import {AuthService} from "../../../core/services/auth.service";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
   selector: 'app-Locations-management-management',
@@ -17,11 +18,13 @@ export class LocationsManagementComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['region', 'action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   regionName = ''
+  regionId = ''
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
   totalElements = 10;
   data: any;
   isLoading = true;
+  private toast: HotToastService = inject(HotToastService);
 
   constructor(private dialog: MatDialog, private locationService: LocationService, public authService: AuthService) {
   }
@@ -67,7 +70,29 @@ export class LocationsManagementComponent implements OnInit, AfterViewInit {
   }
 
   openRegion() {
-    this.dialog.open(this.addRegionTemp)
+    const dialogRef = this.dialog.open(this.addRegionTemp)
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res === 'submit') {
+        this.addRegion()
+      }
+    })
+  }
+
+  editRegion(region: any) {
+    this.regionId = region.id
+    this.regionName = region.locationName;
+    const dialogRef = this.dialog.open(this.addRegionTemp)
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res === 'submit') {
+        this.locationService.editLocations(this.regionName, this.regionId).subscribe((res) => {
+          this.toast.success('تم تعديل المنطقة', {duration: 5000, position: "top-right", theme: "snackbar"});
+          this.getRegion({
+            pageIndex: this.paginator.pageIndex,
+            pageSize: this.paginator.pageSize,
+          })
+        })
+      }
+    })
   }
 
   addRegion() {
@@ -80,13 +105,21 @@ export class LocationsManagementComponent implements OnInit, AfterViewInit {
     })
   }
 
-  deleteRegion() {
+  deleteRegion(region: any) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: 'هل انت متاكد انك تريد حذف المنطقة 1 ؟'}
+      data: {message: `هل انت متاكد انك تريد حذف المنطقة ${region.locationName} ؟`}
     })
     dialogRef.afterClosed().subscribe((res) => {
-
+      if (res) {
+        this.locationService.deleteLocations(region.id).subscribe((res) => {
+          this.toast.success('تم حذف المنطقة', {duration: 5000, position: "top-right", theme: "snackbar"});
+          this.getRegion({
+            pageIndex: this.paginator.pageIndex,
+            pageSize: this.paginator.pageSize,
+          })
+        })
+      }
     })
   }
 }
