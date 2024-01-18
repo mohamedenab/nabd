@@ -3,18 +3,20 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {catchError, map, of, startWith, switchMap} from "rxjs";
 import {LocationService} from "../../../core/services/location.service";
 import {AuthService} from "../../../core/services/auth.service";
 import {HotToastService} from "@ngneat/hot-toast";
+import {PatientService} from "../../../core/services/patient.service";
+import {PrintService} from "../../../core/services/print.service";
 
 @Component({
   selector: 'app-Locations-management-management',
   templateUrl: './locations-management.component.html',
   styleUrls: ['./locations-management.component.scss'],
 })
-export class LocationsManagementComponent implements OnInit, AfterViewInit {
+export class LocationsManagementComponent implements AfterViewInit {
   displayedColumns: string[] = ['region', 'action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   regionName = ''
@@ -24,14 +26,11 @@ export class LocationsManagementComponent implements OnInit, AfterViewInit {
   totalElements = 10;
   data: any;
   isLoading = true;
+  private printService: PrintService = inject(PrintService);
+  public readonly router: Router = inject(Router);
   private toast: HotToastService = inject(HotToastService);
 
   constructor(private dialog: MatDialog, private locationService: LocationService, public authService: AuthService) {
-  }
-
-  ngOnInit() {
-
-
   }
 
   ngAfterViewInit() {
@@ -83,6 +82,7 @@ export class LocationsManagementComponent implements OnInit, AfterViewInit {
     this.regionName = region.locationName;
     const dialogRef = this.dialog.open(this.addRegionTemp)
     dialogRef.afterClosed().subscribe((res) => {
+      this.regionName = '';
       if (res === 'submit') {
         this.locationService.editLocations(this.regionName, this.regionId).subscribe((res) => {
           this.toast.success('تم تعديل المنطقة', {duration: 5000, position: "top-right", theme: "snackbar"});
@@ -120,6 +120,18 @@ export class LocationsManagementComponent implements OnInit, AfterViewInit {
           })
         })
       }
+    })
+  }
+
+  printAll() {
+    this.printService.printAll().subscribe((res) => {
+      this.router.navigate(['/print'], {state: {data: res}})
+    })
+  }
+
+  printLocation(id: any) {
+    this.printService.printLocation(id).subscribe((res) => {
+      this.router.navigate(['/print'], {state: {data: [res]}})
     })
   }
 }

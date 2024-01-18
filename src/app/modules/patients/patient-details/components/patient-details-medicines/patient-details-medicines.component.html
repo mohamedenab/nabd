@@ -1,8 +1,9 @@
 <h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-20  lg:block hidden">الأدوية</h3>
 <div class="border border-solid bg-white py-5 mx-5">
-<div class="flex lg:justify-end justify-center lg:px-10 px-5">
-  <button mat-raised-button color="warn" (click)="openDeleteMedicineSpecialization()">حذف الادوية لتخصص</button>
-  <button mat-raised-button color="primary" class="mr-5" (click)="openAddMedicine()">اضافة دواء</button>
+<div class="flex lg:justify-end justify-center lg:px-10 px-5 gap-3">
+  <button mat-raised-button color="warn" (click)="openActionMedicineSpecialization(false)">حذف الادوية لتخصص</button>
+  <button mat-raised-button color="warn" (click)="openActionMedicineSpecialization(true)">تفعيل او تعطيل الادوية لتخصص</button>
+  <button mat-raised-button color="primary" (click)="openAddMedicine()">اضافة دواء</button>
 </div>
 <div class=" mt-10 px-10 w-full flex flex-col">
   <div class="mat-elevation-z8 w-full overflow-x-auto">
@@ -35,6 +36,13 @@
         <th mat-header-cell *matHeaderCellDef>يكرر كل</th>
         <td mat-cell *matCellDef="let element">
           {{element.repetition === 1 ? 'شهر':element.repetition === 2 ?  'شهرين': element.repetition+' اشهر'}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef>مفعل</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-slide-toggle [checked]="element"  (toggleChange)="toggleMedicine(element)" ></mat-slide-toggle>
+
         </td>
       </ng-container>
       <ng-container matColumnDef="arrayOfMonths">
@@ -144,16 +152,24 @@
     </button>
     <mat-form-field appearance="outline">
       <mat-label>الـــتخصص</mat-label>
-      <mat-select [(ngModel)]="specializationDelete">
+      <mat-select [(ngModel)]="specializationSelected">
         <mat-option *ngFor="let specialization of specializations" [value]="specialization.id">
           {{specialization.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="primary" class=" mt-10 " [disabled]="specializationDelete===''"
+    <button mat-raised-button color="primary" class=" mt-10 " [disabled]="specializationSelected===''" *ngIf="!isToggleDialog"
             (click)="deleteMedicineSpecialization()">
       حذف تخصص
     </button>
+    <div class="flex gap-2.5 items-center justify-center" *ngIf="isToggleDialog">
+      <button mat-raised-button color="primary" class=" mt-10 basis-1/2" cdkFocusInitial (click)="activeMedicineSpecialization()">
+        تفعيل
+      </button>
+      <button mat-raised-button color="warn" class=" mt-10 basis-1/2" (click)="deactiveMedicineSpecialization()">
+        تعطيل
+      </button>
+    </div>
 
   </div>
 </ng-template>

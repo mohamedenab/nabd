@@ -1,4 +1,4 @@
-import {ErrorHandler, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -9,13 +9,11 @@ import {AuthInterceptorService} from "./core/Interceptors/auth-interceptor-servi
 import {HotToastModule} from '@ngneat/hot-toast';
 import {LoaderInterceptor} from "./core/Interceptors/loader.interceptor";
 import {LoaderComponent} from "./shared/components/loader/loader.component";
-import {GlobalErrorHandler} from './core/Interceptors/global-error-handler';
-import {EmptyResponseInterceptor} from "./core/Interceptors/empty-response-body-interceptor.resolver";
 import {ToastService} from "./core/services/toast.service";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

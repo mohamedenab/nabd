@@ -17,6 +17,13 @@ export class SpecializationsService {
     return this.http.get(`${this.baseUrl}`).pipe(map((res: any) => {
       return res.data
     }))
+  }
+  deactivateMedicineSpecializations(id: string, patientId: string){
+        return this.http.put(`${this.baseUrl}/${id}/patient/${patientId}/deactivate`, {})
+
+  }
+  activateMedicineSpecializations(id: string, patientId: string){
+        return this.http.put(`${this.baseUrl}/${id}/patient/${patientId}/activate`, {})
 
   }
 }

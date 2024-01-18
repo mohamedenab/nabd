@@ -32,6 +32,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MedicinesSearchComponent} from "../../shared/components/medicines-search/medicines-search.component";
 import {PatientsManagementComponent} from "./patients-management/patients-management.component";
 import {MatTabsModule} from "@angular/material/tabs";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 // import {CalendarModule} from "primeng/calendar";
 
 export const MY_FORMATS = {
@@ -58,7 +59,7 @@ export const MY_FORMATS = {
     imports: [
         CommonModule,
         PatientsRoutingModule, CKEditorModule, MatDialogModule, MatDatepickerModule,
-        FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatChipsModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatProgressBarModule, MatTableModule, MatAutocompleteModule, MedicinesSearchComponent, MatTabsModule,
+        FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatChipsModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatProgressBarModule, MatTableModule, MatAutocompleteModule, MedicinesSearchComponent, MatTabsModule, MatSlideToggleModule,
     ],
   providers: [
     {

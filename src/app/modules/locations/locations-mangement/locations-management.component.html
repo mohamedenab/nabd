@@ -8,7 +8,7 @@
               إضافة منطقة
               </span>
   </button>
-  <button mat-raised-button>
+  <button mat-raised-button (click)="printAll()">
               <span class="flex gap-2.5">
               <mat-icon aria-hidden="false" fontIcon="print"></mat-icon>
               طباعة
@@ -49,7 +49,7 @@
               حذف
               </span>
                 </button>
-                <button mat-raised-button>
+                <button mat-raised-button (click)="printLocation(element.id)">
               <span class="flex gap-2.5">
               <mat-icon aria-hidden="false" fontIcon="print"></mat-icon>
               طباعة

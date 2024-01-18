@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./pages/home/home.component";
-import {LocationsModule} from "../locations/locations.module";
 import {roleGuard} from "../../core/guards/role.guard";
 
 const routes: Routes = [
@@ -10,6 +9,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'locations'},
       {path: 'locations', loadChildren: () => import('../locations/locations.module').then(m => m.LocationsModule)},
       {path: 'patients', loadChildren: () => import('../patients/patients.module').then(m => m.PatientsModule)},
+      {path: 'print', loadChildren: () => import('../print/print.module').then(m => m.PrintModule)},
       {
         path: 'medicines',
         loadChildren: () => import('../medicine/medicine.module').then(m => m.MedicineModule),

@@ -13,7 +13,8 @@ export const environment = {
   patient: 'http://localhost:8080/api/v1/patient',
   medicine: 'http://localhost:8080/api/v1/medicine',
   history: 'http://localhost:8080/api/v1/history',
-  upload: 'http://localhost:8080/api/v1/upload'
+  upload: 'http://localhost:8080/api/v1/upload',
+  print: 'http://localhost:8080/api/v1/print'
 };
 
 /*

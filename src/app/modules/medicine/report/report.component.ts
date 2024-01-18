@@ -127,7 +127,7 @@ export class ReportComponent implements AfterViewInit {
 
   openReplaceMedicine(medicine: any) {
     const dialogTemp = this.dialog.open(this.replaceTemp)
-    this.replacedId = medicine.id;
+    this.replacedId = medicine.medicineId;
     this.replaceForm.get('firstId')?.setValue(medicine.medicine)
     dialogTemp.afterClosed().subscribe((res) => {
       this.replaceForm.reset()

@@ -34,7 +34,7 @@ export class LocationService {
   }
 
   editLocations(name: string, id: string) {
-    return this.http.post(`${this.baseUrl}/${id}`, {locationName: name})
+    return this.http.put(`${this.baseUrl}/${id}`, {locationName: name})
   }
 
   deleteLocations(id: number) {

@@ -13,6 +13,7 @@ import {MedicineService} from "../../../core/services/medicine.service";
 import {PatientService} from "../../../core/services/patient.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {AuthService} from "../../../core/services/auth.service";
+import {PrintService} from "../../../core/services/print.service";
 
 const MEDICINE =
   `
@@ -39,6 +40,7 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
   private medicineService: MedicineService = inject(MedicineService);
   private patientService: PatientService = inject(PatientService);
   private toast: HotToastService = inject(HotToastService);
+  private printService: PrintService = inject(PrintService);
 
   constructor(private dialog: MatDialog, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
     iconRegistry.addSvgIconLiteral('medicine', sanitizer.bypassSecurityTrustHtml(MEDICINE));
@@ -114,5 +116,11 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
     })
   }
 
+  printPatient(id: any) {
+    this.printService.printPatient(id).subscribe((res) => {
+      this.router.navigate(['/print'], {state: {data:[ {patientPrintDtos: [res]}]}})
+    })
+
+  }
 
 }
