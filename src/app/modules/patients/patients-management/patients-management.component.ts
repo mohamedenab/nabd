@@ -99,7 +99,12 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
       }
     })
     dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.patientService.deletePatient(patient.id).subscribe((res) => {
+          this.toast.success('تم حذف الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
 
+        })
+      }
     })
   }
 
@@ -109,16 +114,18 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
       data: {message: 'هل انت متاكد انك تريد تعطيل الحالة ' + patient.name + '؟'}
     })
     dialogRef.afterClosed().subscribe((res) => {
-      this.patientService.deactivatePatient(patient.id).subscribe((res) => {
-        this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+      if (res) {
+        this.patientService.deactivatePatient(patient.id).subscribe((res) => {
+          this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
 
-      })
+        })
+      }
     })
   }
 
   printPatient(id: any) {
     this.printService.printPatient(id).subscribe((res) => {
-      this.router.navigate(['/print'], {state: {data:[ {patientPrintDtos: [res]}]}})
+      this.router.navigate(['/print'], {state: {data: [{patientPrintDtos: [res]}]}})
     })
 
   }

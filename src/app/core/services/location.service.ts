@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs";
+import { Cacheable} from '../decorators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class LocationService {
     return this.http.post(`${this.baseUrl}`, body)
   }
 
+  @Cacheable('getLocations')
   getLocations(pageNo: number, pageSize: number) {
     return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=locationName`)
   }
