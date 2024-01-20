@@ -9,5 +9,7 @@ export const environment = {
   patient: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/patient',
   medicine: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/medicine',
   history: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/history',
-  upload: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/upload'
+  upload: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/upload',
+  print: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/print'
+
 };
