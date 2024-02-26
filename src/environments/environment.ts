@@ -4,17 +4,28 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api/v1',
-  auth: 'http://localhost:8080/api/v1/auth',
-  locations: 'http://localhost:8080/api/v1/locations',
-  report: 'http://localhost:8080/api/v1/report',
-  users: 'http://localhost:8080/api/v1/users',
-  specialization: 'http://localhost:8080/api/v1/specialization',
-  patient: 'http://localhost:8080/api/v1/patient',
-  medicine: 'http://localhost:8080/api/v1/medicine',
-  history: 'http://localhost:8080/api/v1/history',
-  upload: 'http://localhost:8080/api/v1/upload',
-  print: 'http://localhost:8080/api/v1/print'
+  // apiUrl: 'http://localhost:8080/api/v1',
+  // auth: 'http://localhost:8080/api/v1/auth',
+  // locations: 'http://localhost:8080/api/v1/locations',
+  // report: 'http://localhost:8080/api/v1/report',
+  // users: 'http://localhost:8080/api/v1/users',
+  // specialization: 'http://localhost:8080/api/v1/specialization',
+  // patient: 'http://localhost:8080/api/v1/patient',
+  // medicine: 'http://localhost:8080/api/v1/medicine',
+  // history: 'http://localhost:8080/api/v1/history',
+  // upload: 'http://localhost:8080/api/v1/upload',
+  // print: 'http://localhost:8080/api/v1/print'
+  apiUrl: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1',
+  auth: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/auth',
+  locations: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/locations',
+  report: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/report',
+  users: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/users',
+  specialization: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/specialization',
+  patient: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/patient',
+  medicine: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/medicine',
+  history: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/history',
+  upload: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/upload',
+  print: 'https://nabd-back-q3ux3.ondigitalocean.app/api/v1/print'
 };
 
 /*

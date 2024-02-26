@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Patient} from 'src/app/core/interfaces/patient';
+import {Specialization} from "../../../../../core/interfaces/specialization";
 
 @Component({
   selector: 'app-patient-details-header',
@@ -8,12 +9,12 @@ import {Patient} from 'src/app/core/interfaces/patient';
 })
 export class PatientDetailsHeaderComponent {
   @Input() patient: Patient;
-
-  specializations = [
-    {type: 'teeth', text: 'اسنان'},
-    {type: 'general_surgery', text: 'جراحة عامة'},
-    {type: 'hematology', text: 'امراض الدم'},
-  ];
+  @Input() specializations: Specialization[];
+  insuranceTypes = [
+    {type: 'NONE', text: 'لايوجد'},
+    {type: 'STATE_INSURANCE', text: 'تامين دولة'},
+    {type: 'STATE_EXPENSE', text: 'نفقة دولة'},
+  ]
   expand = false;
 
 }

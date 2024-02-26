@@ -12,6 +12,7 @@ import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {ToastService} from "./core/services/toast.service";
 import {provideHttpCache, withHttpCacheInterceptor} from "@ngneat/cashew";
 import {GlobalErrorHandler} from "./core/Interceptors/global-error-handler";
+import { ArrayMappingPipe } from './shared/pipes/arrayMapping.pipe';
 
 @NgModule({
   declarations: [

@@ -1,4 +1,4 @@
-<app-patient-details-header [patient]="patient"></app-patient-details-header>
+<app-patient-details-header [patient]="patient" [specializations]="specializations"></app-patient-details-header>
 <mat-tab-group *ngIf="innerWidth<991;else page" class="w-[90vw] mx-auto">
   <mat-tab label="التقارير الشهريه">
     <app-patient-details-history [months]="historyDates.month" [years]="historyDates.year"
