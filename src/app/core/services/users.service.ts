@@ -20,4 +20,8 @@ export class UsersService {
     return this.http.put(`${this.baseUrl}/${id}`, data)
 
   }
+  deleteUser(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`)
+
+  }
 }

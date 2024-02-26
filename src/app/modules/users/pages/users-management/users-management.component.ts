@@ -60,7 +60,11 @@ export class UsersManagementComponent implements AfterViewInit {
       data: {message: `هل انت متاكد انك تريد حذف المستخدم ${user.name} ؟ `}
     })
     dialogRef.afterClosed().subscribe((res) => {
-      this.toast.success('تم حذف المستخدم', {duration: 5000, position: "top-right", theme: "snackbar"});
+      if (res) {
+        this.userService.deleteUser(user.id).subscribe((res) => {
+          this.toast.success('تم حذف المستخدم', {duration: 5000, position: "top-right", theme: "snackbar"});
+        })
+      }
     })
   }
 }

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -11,6 +11,7 @@ import {LoaderInterceptor} from "./core/Interceptors/loader.interceptor";
 import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {ToastService} from "./core/services/toast.service";
 import {provideHttpCache, withHttpCacheInterceptor} from "@ngneat/cashew";
+import {GlobalErrorHandler} from "./core/Interceptors/global-error-handler";
 
 @NgModule({
   declarations: [
@@ -30,11 +31,11 @@ import {provideHttpCache, withHttpCacheInterceptor} from "@ngneat/cashew";
     multi: true
   },
     provideHttpClient(withInterceptors([withHttpCacheInterceptor()])), provideHttpCache(),
-    {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true}, ToastService
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler,
-    // },
+    {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true}, ToastService,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
   ],
   bootstrap: [AppComponent]
 })

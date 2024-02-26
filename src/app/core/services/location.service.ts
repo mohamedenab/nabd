@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs";
-import { Cacheable} from '../decorators';
+import {Cacheable} from '../decorators';
+import {cache} from "../utlis/cache";
+import {StorageService} from "../utlis/storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +12,15 @@ import { Cacheable} from '../decorators';
 export class LocationService {
   baseUrl = environment.locations
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storageService: StorageService) {
   }
 
   createLocation(body: any) {
     return this.http.post(`${this.baseUrl}`, body)
   }
 
-  @Cacheable('getLocations')
   getLocations(pageNo: number, pageSize: number) {
-    return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=locationName`)
+    return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=locationName`).pipe(cache(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=locationName`, this.storageService))
   }
 
   getLocation(id: string) {
