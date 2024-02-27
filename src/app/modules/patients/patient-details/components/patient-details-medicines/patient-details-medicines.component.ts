@@ -102,6 +102,7 @@ export class PatientDetailsMedicinesComponent implements OnInit {
     this.addMedicine.patchValue(medicine);
     this.addMedicine.get('medicineId')?.disable();
     this.addMedicine.get('medicineId')?.setValue(medicine.medicineName);
+    this.addMedicine.get('notes')?.setValue(medicine.note);
     this.addMedicine.get('startIn')?.setValue(moment(new Date(medicine.startIn)));
     console.log(this.addMedicine.getRawValue());
     const dialogRef = this.dialog.open(this.addMedicineTemp, {disableClose: false})
@@ -113,6 +114,10 @@ export class PatientDetailsMedicinesComponent implements OnInit {
   }
 
   editMedicine() {
+    let formData = this.addMedicine.value;
+    formData['year'] = new Date(formData['startIn']).getFullYear()
+    formData['month'] = new Date(formData['startIn']).getMonth() + 1
+    delete formData['startIn'];
     this.patientService.editMedicine(this.editId, this.addMedicine.value).subscribe((res) => {
       this.dialog.closeAll()
       this.toast.success('تم تعديل الدواء بنجاح')
@@ -170,8 +175,6 @@ export class PatientDetailsMedicinesComponent implements OnInit {
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     this.addMedicine.get('startIn')!.setValue(ctrlValue);
-    console.log(this.addMedicine.get('startIn')?.value.year());
-    console.log(this.addMedicine.get('startIn')?.value.month());
     datepicker.close();
   }
 

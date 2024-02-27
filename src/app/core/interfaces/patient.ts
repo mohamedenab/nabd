@@ -26,6 +26,7 @@ export interface Patient {
 export interface PatientMedicine {
   id: number;
   medicineName: string;
+  note: string;
   price: number;
   numberOfPastilleInEachBox: number;
   activeSubstance: string;
