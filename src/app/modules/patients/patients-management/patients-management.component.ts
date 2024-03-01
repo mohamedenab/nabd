@@ -55,25 +55,27 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.route.params.subscribe((params) => {
+      this.paginator.page
+        .pipe(
+          startWith({}),
+          switchMap(() => {
+            this.isLoading = true;
+            return this.getPatient(
+            ).pipe(catchError(() => of(null)));
+          }),
+          map((data: any) => {
+            if (data == null) return [];
+            this.totalElements = data.totalElements;
+            this.isLoading = false;
+            return data.data;
+          })
+        )
+        .subscribe((data) => {
+          this.dataSource = new MatTableDataSource(data);
+        });
+    })
 
-    this.paginator.page
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoading = true;
-          return this.getPatient(
-          ).pipe(catchError(() => of(null)));
-        }),
-        map((data: any) => {
-          if (data == null) return [];
-          this.totalElements = data.totalElements;
-          this.isLoading = false;
-          return data.data;
-        })
-      )
-      .subscribe((data) => {
-        this.dataSource = new MatTableDataSource(data);
-      });
   }
 
   getPatient() {

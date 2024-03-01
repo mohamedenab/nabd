@@ -48,10 +48,10 @@ export class MedicineService {
   }
 
   deactivateMedicine(medicineId: number, patientId: string) {
-    return this.http.put(`${this.baseUrl}/medicine/${medicineId}/patient/${patientId}/deactivate`, {})
+    return this.http.put(`${this.baseUrl}/${medicineId}/patient/${patientId}/deactivate`, {})
   }
 
   activateMedicine(medicineId: number, patientId: string) {
-    return this.http.put(`${this.baseUrl}/medicine/${medicineId}/patient/${patientId}/activate`, {})
+    return this.http.put(`${this.baseUrl}/${medicineId}/patient/${patientId}/activate`, {})
   }
 }
