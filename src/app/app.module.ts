@@ -10,7 +10,6 @@ import {HotToastModule} from '@ngneat/hot-toast';
 import {LoaderInterceptor} from "./core/Interceptors/loader.interceptor";
 import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {ToastService} from "./core/services/toast.service";
-import {provideHttpCache, withHttpCacheInterceptor} from "@ngneat/cashew";
 import {GlobalErrorHandler} from "./core/Interceptors/global-error-handler";
 import { ArrayMappingPipe } from './shared/pipes/arrayMapping.pipe';
 
@@ -31,7 +30,6 @@ import { ArrayMappingPipe } from './shared/pipes/arrayMapping.pipe';
     useClass: AuthInterceptorService,
     multi: true
   },
-    provideHttpClient(withInterceptors([withHttpCacheInterceptor()])), provideHttpCache(),
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true}, ToastService,
     {
       provide: ErrorHandler,
