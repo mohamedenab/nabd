@@ -1,4 +1,4 @@
-import {ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -10,8 +10,8 @@ import {HotToastModule} from '@ngneat/hot-toast';
 import {LoaderInterceptor} from "./core/Interceptors/loader.interceptor";
 import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {ToastService} from "./core/services/toast.service";
-import {GlobalErrorHandler} from "./core/Interceptors/global-error-handler";
-import { ArrayMappingPipe } from './shared/pipes/arrayMapping.pipe';
+import * as Sentry from "@sentry/angular-ivy";
+import {Router} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -33,7 +33,19 @@ import { ArrayMappingPipe } from './shared/pipes/arrayMapping.pipe';
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true}, ToastService,
     {
       provide: ErrorHandler,
-      useClass: GlobalErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+      }),
+    }, {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {
+      },
+      deps: [Sentry.TraceService],
+      multi: true,
     },
   ],
   bootstrap: [AppComponent]

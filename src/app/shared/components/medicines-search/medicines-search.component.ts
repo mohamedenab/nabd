@@ -5,7 +5,6 @@ import {MatInputModule} from "@angular/material/input";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {debounceTime, distinctUntilChanged, filter, map, Observable, startWith, switchMap} from "rxjs";
 import {MedicineService} from "../../../core/services/medicine.service";
-import {patientMedicine} from "../../../core/interfaces/patient-medicine";
 
 @Component({
     selector: 'app-medicines-search',

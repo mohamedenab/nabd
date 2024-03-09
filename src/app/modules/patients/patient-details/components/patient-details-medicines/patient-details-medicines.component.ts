@@ -103,6 +103,7 @@ export class PatientDetailsMedicinesComponent implements OnInit {
     this.addMedicine.get('medicineId')?.disable();
     this.addMedicine.get('medicineId')?.setValue(medicine.medicineName);
     this.addMedicine.get('notes')?.setValue(medicine.note);
+    this.addMedicine.get('specialization')?.setValue(medicine.specializationId);
     this.addMedicine.get('startIn')?.setValue(moment(new Date(medicine.startIn)));
     console.log(this.addMedicine.getRawValue());
     const dialogRef = this.dialog.open(this.addMedicineTemp, {disableClose: false})

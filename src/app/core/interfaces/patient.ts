@@ -33,6 +33,7 @@ export interface PatientMedicine {
   numberOfPatientTakeIt: number;
   medicineStatus: string;
   startIn: number;
+  specializationId: number;
 }
 
 export interface patientHistory {
