@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --disable-host-check ",
-    "build": "ng build && npm run sentry:sourcemaps",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org nabddigital --project javascript-angular ./dist && sentry-cli sourcemaps upload --org nabddigital --project javascript-angular ./dist"
