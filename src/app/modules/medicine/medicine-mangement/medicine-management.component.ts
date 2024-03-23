@@ -4,7 +4,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {catchError, map, of, startWith, switchMap} from "rxjs";
 import {MedicineService} from "../../../core/services/medicine.service";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
 import {HotToastService} from "@ngneat/hot-toast";
@@ -24,9 +24,13 @@ export class MedicineManagementComponent implements AfterViewInit {
   isLoading = true;
   replacedId: string = ''
   replaceForm: FormGroup;
+  addForm: FormGroup;
   @ViewChild('replaceTemp')
   replaceTemp!: TemplateRef<any>;
+  @ViewChild('addTemp')
+  addTemp!: TemplateRef<any>;
   dialog: MatDialog = inject(MatDialog);
+  search = ''
   private toast: HotToastService = inject(HotToastService);
 
   constructor(private fb: FormBuilder) {
@@ -36,6 +40,13 @@ export class MedicineManagementComponent implements AfterViewInit {
     this.replaceForm = this.fb.group({
       firstId: [{value: '', disabled: true}],
       secondId: '',
+    })
+    this.addForm = this.fb.group({
+      nameInEng: ['',[Validators.required]],
+      nameInArb: ['',[Validators.required]],
+      price: ['',[Validators.required]],
+      numberOfPastilleInEachBox: ['',[Validators.required]],
+      activeSubstance: ['',[Validators.required]],
     })
   }
 
@@ -50,7 +61,8 @@ export class MedicineManagementComponent implements AfterViewInit {
           this.isLoading = true;
           return this.medicineService.getMedicines(
             this.paginator.pageIndex,
-            this.paginator.pageSize
+            this.paginator.pageSize,
+            this.search
           ).pipe(catchError(() => of(null)));
         }),
         map((data: any) => {
@@ -140,6 +152,19 @@ export class MedicineManagementComponent implements AfterViewInit {
         this.dialog.closeAll();
         this.replacedId = '';
       })
+    })
+  }
+
+  openAddMedicine() {
+    const dialogTemp = this.dialog.open(this.addTemp)
+    dialogTemp.afterClosed().subscribe((res) => {
+      this.addForm.reset()
+    })
+  }
+  addMedicine() {
+    this.medicineService.addMedicine(this.addForm.value).subscribe((res)=>{
+      this.toast.success('تم اضاقة الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
+
     })
   }
 }

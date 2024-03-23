@@ -13,6 +13,10 @@ export class MedicineService {
   constructor(private http: HttpClient) {
   }
 
+  addMedicine(body: any) {
+    return this.http.post(`${this.baseUrl}`,body)
+  }
+
   getMedicines(pageNo: number, pageSize: number, filter?: string) {
     return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}` + (filter ? `&filter=${filter}` : ''))
   }

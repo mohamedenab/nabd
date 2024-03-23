@@ -1,11 +1,11 @@
 <h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-20  lg:block hidden">الأدوية</h3>
 <div class="border border-solid bg-white py-5 mx-5">
-<div class="flex lg:justify-end justify-center lg:px-10 px-5 gap-3">
+<div class="flex lg:justify-end justify-center lg:px-10 px-5 gap-3 flex-wrap">
   <button mat-raised-button color="warn" (click)="openActionMedicineSpecialization(false)">حذف الادوية لتخصص</button>
   <button mat-raised-button color="warn" (click)="openActionMedicineSpecialization(true)">تفعيل او تعطيل الادوية لتخصص</button>
   <button mat-raised-button color="primary" (click)="openAddMedicine()">اضافة دواء</button>
 </div>
-<div class=" mt-10 px-10 w-full flex flex-col">
+<div class=" mt-10 lg:px-10 px-1 w-full flex flex-col">
   <div class="mat-elevation-z8 w-full overflow-x-auto">
     <table mat-table [dataSource]="dataSource" class="rounded-lg">
 
