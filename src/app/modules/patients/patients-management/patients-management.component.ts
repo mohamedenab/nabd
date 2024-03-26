@@ -110,20 +110,30 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
     })
   }
 
-  disablePatient(patient: Patient) {
+  togglePatient(patient: Patient,e:any) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: 'هل انت متاكد انك تريد تعطيل الحالة ' + patient.name + '؟'}
+      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` +' '+ patient.name + '؟'}
     })
     dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.patientService.deactivatePatient(patient.id).subscribe((res) => {
-          this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+      if (res.dismiss) {
+        if (patient.active) {
+          this.patientService.deactivatePatient(patient.id).subscribe((res) => {
+            this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
 
-        })
+          })
+        } else {
+          this.patientService.activatePatient(patient.id).subscribe((res) => {
+            this.toast.success('تم تفعيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+
+          })
+        }
+      }else {
+        e.source.checked = true;
       }
     })
   }
+
 
   printPatient(id: any) {
     this.printService.printPatient(id).subscribe((res) => {

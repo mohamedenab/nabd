@@ -58,11 +58,10 @@
               طباعة
               </span>
               </button>
-              <button mat-raised-button color="warn" (click)="disablePatient(element)">
-              <span class="flex gap-2.5 items-center whitespace-nowrap">
-              <mat-icon aria-hidden="false" fontIcon="pause"></mat-icon>
-تعطيل              </span>
-              </button>
+              <mat-slide-toggle [checked]="element.active"  (change)="togglePatient(element,$event)" >
+                {{element.active?'تعطيل':'تفعيل'}}
+              </mat-slide-toggle>
+
               <a [routerLink]="'/patients/'+element.id+'/details/'">
                 <button mat-raised-button color="primary">
                   <mat-icon svgIcon="medicine" aria-hidden="false"></mat-icon>
