@@ -93,7 +93,13 @@
       <label>تفاصيل الاستكشاف</label>
       <div class="editor">
 
-        <ckeditor [editor]="editor" formControlName="discoveryDetailsWithImageLink"
+        <ckeditor [editor]="editor" [config]="{ toolbar:[
+  'heading', '|',
+  'bold', 'italic', 'underline', '|',
+  'bulletedList', 'numberedList', '|',
+  'link', 'blockQuote', '|',
+  'undo', 'redo'
+]}" formControlName="discoveryDetailsWithImageLink"
                   (ready)="onReady($event)"></ckeditor>
 
       </div>
