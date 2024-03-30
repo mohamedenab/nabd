@@ -12,6 +12,7 @@ import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {ToastService} from "./core/services/toast.service";
 import * as Sentry from "@sentry/angular-ivy";
 import {Router} from "@angular/router";
+import {GlobalErrorHandler} from "./core/Interceptors/global-error-handler";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {Router} from "@angular/router";
       deps: [Sentry.TraceService],
       multi: true,
     },
+    {provide: ErrorHandler, useClass: GlobalErrorHandler}
   ],
   bootstrap: [AppComponent]
 })

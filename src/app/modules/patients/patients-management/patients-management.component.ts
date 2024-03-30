@@ -104,16 +104,18 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
       if (res) {
         this.patientService.deletePatient(patient.id).subscribe((res) => {
           this.toast.success('تم حذف الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
-
+          this.getPatient().subscribe((res: any) => {
+            this.dataSource = new MatTableDataSource(res.data);
+          })
         })
       }
     })
   }
 
-  togglePatient(patient: Patient,e:any) {
+  togglePatient(patient: Patient, e: any) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` +' '+ patient.name + '؟'}
+      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟'}
     })
     dialogRef.afterClosed().subscribe((res) => {
       if (res.dismiss) {
@@ -128,7 +130,7 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
 
           })
         }
-      }else {
+      } else {
         e.source.checked = true;
       }
     })

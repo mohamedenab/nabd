@@ -67,6 +67,7 @@ export class CreatePatientComponent implements OnInit {
       dateOfHelp: [''],
       discoveryDetailsWithImageLink: [''],
       periodOfDiscovery: [''],
+      patientDiagnosis: [''],
       thereInsurance: ['NONE'],
       volunteerName: [''],
       volunteerMobileNumber: [''],

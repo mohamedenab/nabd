@@ -111,6 +111,11 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
 
+        <mat-label> تشخيص الحالة</mat-label>
+        <textarea matInput formControlName="patientDiagnosis"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+
         <mat-label>هل يوجد تامين</mat-label>
         <mat-select formControlName="thereInsurance">
           <mat-option *ngFor="let insuranceType of insuranceTypes" [value]="insuranceType.type">
