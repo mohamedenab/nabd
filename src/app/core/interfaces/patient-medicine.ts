@@ -1,5 +1,6 @@
 export interface patientMedicine {
   id: number;
+  medicineId: number;
   nameInEng: string;
   nameInArb: string;
   price: number;

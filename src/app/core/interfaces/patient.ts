@@ -7,6 +7,7 @@ export interface Patient {
   numberOfFamilyMembers: number;
   nationalIDForParent: string;
   maritalStatus: string;
+  patientDiagnosis: string;
   mobileNumbers: string[];
   address: string;
   addressLink: string;

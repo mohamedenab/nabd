@@ -194,23 +194,33 @@ export class PatientDetailsMedicinesComponent implements OnInit {
 
   toggleMedicine(medicine: patientMedicine) {
     if (medicine.active) {
-      this.medicineService.deactivateMedicine(medicine.id, this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
+      this.medicineService.deactivateMedicine(medicine.medicineId, this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
         this.toast.success('تم تعطيل الدواء بنجاح')
       })
     } else {
-      this.medicineService.activateMedicine(medicine.id, this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
+      this.medicineService.activateMedicine(medicine.medicineId, this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
         this.toast.success('تم تفعيل الدواء بنجاح')
       })
     }
   }
 
+  getMedicines() {
+    this.patientService.getMedicine(this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
+      this.dataSource = new MatTableDataSource(res);
+    })
+  }
+
   activeMedicineSpecialization() {
     this.specializationsService.activateMedicineSpecializations(this.specializationSelected, this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
+      this.dialog.closeAll()
+      this.getMedicines();
     })
   }
 
   deactiveMedicineSpecialization() {
     this.specializationsService.deactivateMedicineSpecializations(this.specializationSelected, this.route.snapshot.paramMap.get('id')!).subscribe((res) => {
+      this.dialog.closeAll()
+      this.getMedicines();
     })
   }
 }
