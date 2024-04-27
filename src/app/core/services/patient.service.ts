@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs";
+import {map, pipe} from "rxjs";
+import {cache} from "../utlis/cache";
+import {StorageService} from "../utlis/storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class PatientService {
   baseUrl = environment.patient
   historyUrl = environment.history
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storageService: StorageService) {
   }
 
   createPatient(data: any) {
@@ -24,9 +26,17 @@ export class PatientService {
   deactivatePatient(id: string) {
     return this.http.put(`${this.baseUrl}/deactivate/${id}`, {})
   }
+
   activatePatient(id: string) {
     return this.http.put(`${this.baseUrl}/activate/${id}`, {})
   }
+
+  getPatients(pageNo: number, pageSize: number, filter?: string) {
+    return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name` + (filter ? `&filterType=name&filterValue=${filter}` : ''))
+      .pipe(cache(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name` + (filter ? `&filterType=name&filterValue=${filter}` : ''), this.storageService))
+
+  }
+
   getPatient(id: string) {
     return this.http.get(`${this.baseUrl}/${id}`,).pipe(
       map((res: any) => {

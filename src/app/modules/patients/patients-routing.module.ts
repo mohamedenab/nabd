@@ -10,6 +10,7 @@ import {
   patientMedicineResolver,
   patientResolver
 } from "../../core/resolver/patient.resolver";
+import {PatientsManagementComponent} from "./patients-management/patients-management.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     component: CreatePatientComponent,
     resolve: {locations: locationsResolver, specialization: specializationsResolver}
   },
+  {path: 'management', component: PatientsManagementComponent},
   {
     path: ':id', resolve: {
       patient: patientResolver,

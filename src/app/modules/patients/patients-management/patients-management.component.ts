@@ -1,19 +1,19 @@
-import {AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {MatDialog} from "@angular/material/dialog";
-import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
-import {catchError, map, of, startWith, switchMap} from "rxjs";
+import {AuthService} from "../../../core/services/auth.service";
 import {LocationService} from "../../../core/services/location.service";
-import {Patient} from "../../../core/interfaces/patient";
 import {MedicineService} from "../../../core/services/medicine.service";
 import {PatientService} from "../../../core/services/patient.service";
 import {HotToastService} from "@ngneat/hot-toast";
-import {AuthService} from "../../../core/services/auth.service";
 import {PrintService} from "../../../core/services/print.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatIconRegistry} from "@angular/material/icon";
+import {DomSanitizer} from "@angular/platform-browser";
+import {catchError, map, of, startWith, switchMap} from "rxjs";
+import {Patient} from "../../../core/interfaces/patient";
+import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
 
 const MEDICINE =
   `
@@ -25,12 +25,12 @@ const MEDICINE =
   templateUrl: './patients-management.component.html',
   styleUrls: ['./patients-management.component.scss']
 })
-export class PatientsManagementComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'phone', 'action'];
+export class PatientsManagementComponent implements AfterViewInit {
+  displayedColumns: string[] = ['name', 'phone', 'location', 'action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  name = ''
   isLoading = true;
   totalElements = 10;
+  search = ''
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
   public readonly route: ActivatedRoute = inject(ActivatedRoute);
@@ -47,12 +47,6 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit() {
-    this.route.data.subscribe((res: any) => {
-      this.name = res.name
-    })
-  }
-
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.route.params.subscribe((params) => {
@@ -62,6 +56,9 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
           switchMap(() => {
             this.isLoading = true;
             return this.getPatient(
+              this.paginator.pageIndex,
+              this.paginator.pageSize,
+              this.search
             ).pipe(catchError(() => of(null)));
           }),
           map((data: any) => {
@@ -78,18 +75,8 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
 
   }
 
-  getPatient() {
-    if (this.router.url.includes('locations')) {
-      return this.locationService.getPatient(
-        this.paginator.pageIndex,
-        this.paginator.pageSize,
-        this.route.snapshot.paramMap.get('id')!
-      )
-    } else {
-      return this.medicineService.getPatients(
-        this.route.snapshot.paramMap.get('id')!
-      )
-    }
+  getPatient(pageNo: number, pageSize: number, filter?: string) {
+    return this.patientService.getPatients(pageNo, pageSize, filter)
   }
 
   deletePatient(patient: Patient) {
@@ -104,7 +91,9 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
       if (res) {
         this.patientService.deletePatient(patient.id).subscribe((res) => {
           this.toast.success('تم حذف الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
-          this.getPatient().subscribe((res: any) => {
+          this.getPatient(this.paginator.pageIndex,
+            this.paginator.pageSize,
+            this.search).subscribe((res: any) => {
             this.dataSource = new MatTableDataSource(res.data);
           })
         })
@@ -144,4 +133,17 @@ export class PatientsManagementComponent implements OnInit, AfterViewInit {
 
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.isLoading = true;
+    this.getPatient(
+      0,
+      this.paginator.pageSize,
+      filterValue
+    ).subscribe((res: any) => {
+      this.dataSource = new MatTableDataSource(res.data);
+      this.totalElements = res.totalElements;
+      this.isLoading = false;
+    })
+  }
 }

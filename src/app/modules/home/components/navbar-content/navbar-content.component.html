@@ -1,25 +1,32 @@
 <div class="flex flex-wrap gap-4 flex-col px-4 lg:flex-row lg:px-0  ">
 
-    <div [matMenuTriggerFor]="menu" class="inline-flex items-center cursor-pointer justify-end" dir="ltr">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="expand_more"></mat-icon>
-        المناطق
-    </div>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="/locations/management">الكل</button>
+  <div [matMenuTriggerFor]="menu" class="inline-flex items-center cursor-pointer justify-end" dir="ltr">
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="expand_more"></mat-icon>
+    المناطق
+  </div>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/locations/management">الكل</button>
 
-        <button mat-menu-item *ngFor="let location of locations"
-                routerLink="/locations/{{location.id}}" (click)="closeSideNav()">{{location.locationName}}</button>
-
-    </mat-menu>
-    <a class="inline-flex items-center" routerLink="/medicines/management" (click)="closeSideNav()" *ngIf="!authService.isUserNormal()">الادوية</a>
-    <a class="inline-flex items-center" routerLink="/medicines/report" (click)="closeSideNav()" *ngIf="!authService.isUserNormal()">تقرير
-        الادوية</a>
-    <a class="inline-flex items-center" routerLink="/users/management" (click)="closeSideNav()" *ngIf="authService.isUserSuperAdmin()">ادارة
-        المستخدمين</a>
-    <a class="inline-flex items-center" routerLink="/locations/management" (click)="closeSideNav()">ادارة المناطق</a>
-    <button mat-icon-button [autofocus]="false" color="warn"
-            class="mr-auto !inline-flex justify-center items-center"
-            (click)="logout()">
-        <mat-icon>logout</mat-icon>
+    <button mat-menu-item *ngFor="let location of locations"
+            routerLink="/locations/{{location.id}}" (click)="closeSideNav()">{{ location.locationName }}
     </button>
+
+  </mat-menu>
+  <a class="inline-flex items-center" routerLink="/medicines/management" (click)="closeSideNav()"
+     *ngIf="!authService.isUserNormal()">الادوية</a>
+  <a class="inline-flex items-center" routerLink="/medicines/report" (click)="closeSideNav()"
+     *ngIf="!authService.isUserNormal()">تقرير
+    الادوية</a>
+  <a class="inline-flex items-center" routerLink="/patients/management" (click)="closeSideNav()"
+     *ngIf="!authService.isUserNormal()">ادارة
+    الحالات</a>
+  <a class="inline-flex items-center" routerLink="/users/management" (click)="closeSideNav()"
+                   *ngIf="authService.isUserSuperAdmin()">ادارة
+  المستخدمين</a>
+  <a class="inline-flex items-center" routerLink="/locations/management" (click)="closeSideNav()">ادارة المناطق</a>
+  <button mat-icon-button [autofocus]="false" color="warn"
+          class="mr-auto !inline-flex justify-center items-center"
+          (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
 </div>
