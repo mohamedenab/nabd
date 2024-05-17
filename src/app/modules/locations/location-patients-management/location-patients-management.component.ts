@@ -79,17 +79,11 @@ export class LocationPatientsManagementComponent implements OnInit, AfterViewIni
   }
 
   getPatient() {
-    if (this.router.url.includes('locations')) {
-      return this.locationService.getPatient(
-        this.paginator.pageIndex,
-        this.paginator.pageSize,
-        this.route.snapshot.paramMap.get('id')!
-      )
-    } else {
-      return this.medicineService.getPatients(
-        this.route.snapshot.paramMap.get('id')!
-      )
-    }
+    return this.locationService.getPatient(
+      this.paginator.pageIndex,
+      this.paginator.pageSize,
+      this.route.snapshot.paramMap.get('id')!
+    )
   }
 
   deletePatient(patient: Patient) {

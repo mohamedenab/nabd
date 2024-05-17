@@ -14,7 +14,7 @@ export class MedicineService {
   }
 
   addMedicine(body: any) {
-    return this.http.post(`${this.baseUrl}`,body)
+    return this.http.post(`${this.baseUrl}`, body)
   }
 
   getMedicines(pageNo: number, pageSize: number, filter?: string) {
@@ -33,8 +33,8 @@ export class MedicineService {
     return this.http.delete(`${this.baseUrl}/delete/${id}`)
   }
 
-  getPatients(id: string) {
-    return this.http.get(`${this.baseUrl}/patient/${id}`)
+  getPatients(id: string, pageNo: number, pageSize: number,) {
+    return this.http.get(`${this.baseUrl}/patient/${id}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name`)
   }
 
   replaceMedicine(firstId: string,

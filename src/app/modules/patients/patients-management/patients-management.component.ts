@@ -14,6 +14,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {catchError, map, of, startWith, switchMap} from "rxjs";
 import {Patient} from "../../../core/interfaces/patient";
 import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
+import {Medicine} from "../../../core/interfaces/medicine";
 
 const MEDICINE =
   `
@@ -31,6 +32,8 @@ export class PatientsManagementComponent implements AfterViewInit {
   isLoading = true;
   totalElements = 10;
   search = ''
+  medicineId = ''
+  medicineData: Medicine;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
   public readonly route: ActivatedRoute = inject(ActivatedRoute);
@@ -49,16 +52,23 @@ export class PatientsManagementComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.route.data.subscribe((data) => {
+      this.medicineData = data.name
+    })
     this.route.params.subscribe((params) => {
       this.paginator.page
         .pipe(
           startWith({}),
           switchMap(() => {
             this.isLoading = true;
+            if (this.router.url.includes('medicines')) {
+              this.medicineId = params.id
+              this.displayedColumns = this.displayedColumns.filter((col) => col !== 'location')
+            }
             return this.getPatient(
               this.paginator.pageIndex,
               this.paginator.pageSize,
-              this.search
+              this.search,
             ).pipe(catchError(() => of(null)));
           }),
           map((data: any) => {
@@ -76,7 +86,11 @@ export class PatientsManagementComponent implements AfterViewInit {
   }
 
   getPatient(pageNo: number, pageSize: number, filter?: string) {
-    return this.patientService.getPatients(pageNo, pageSize, filter)
+    if (this.router.url.includes('medicines')) {
+      return this.medicineService.getPatients(this.medicineId, pageNo, pageSize)
+    } else {
+      return this.patientService.getPatients(pageNo, pageSize, filter)
+    }
   }
 
   deletePatient(patient: Patient) {
