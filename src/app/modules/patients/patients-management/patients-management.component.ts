@@ -33,7 +33,7 @@ export class PatientsManagementComponent implements AfterViewInit {
   totalElements = 10;
   search = ''
   medicineId = ''
-  medicineData: Medicine;
+  medicineName: string;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
   public readonly route: ActivatedRoute = inject(ActivatedRoute);
@@ -53,7 +53,7 @@ export class PatientsManagementComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.route.data.subscribe((data) => {
-      this.medicineData = data.name
+      this.medicineName = data.name
     })
     this.route.params.subscribe((params) => {
       this.paginator.page
