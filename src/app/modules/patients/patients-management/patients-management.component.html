@@ -77,7 +77,7 @@
 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row [ngClass]="{'!bg-red-300':!row?.active}" *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
 
