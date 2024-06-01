@@ -40,6 +40,7 @@ export class PatientDetailsHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('lol');
     const date = new Date();
     if (!this.months.includes((date.getMonth() + 1).toString())) {
       this.months.push((date.getMonth() + 1).toString())
@@ -55,7 +56,8 @@ export class PatientDetailsHistoryComponent implements OnInit {
 
   submitAddHistory() {
     this.patientService.addHistory(this.route.snapshot.paramMap.get('id')!,
-      this.historyFrom.get('year')?.value!, this.historyFrom.get('month')?.value!, this.addHistory.value).subscribe((res) => {
+      // this.historyFrom.get('month')?.value!
+      this.historyFrom.get('year')?.value!, '5', this.addHistory.value).subscribe((res) => {
       this.toast.success('تم اضافة التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
       this.dialog.closeAll();
       this.getHistory();
