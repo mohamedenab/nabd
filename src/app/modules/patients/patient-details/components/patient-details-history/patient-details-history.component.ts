@@ -56,8 +56,8 @@ export class PatientDetailsHistoryComponent implements OnInit {
 
   submitAddHistory() {
     this.patientService.addHistory(this.route.snapshot.paramMap.get('id')!,
-      // this.historyFrom.get('month')?.value!
-      this.historyFrom.get('year')?.value!, '5', this.addHistory.value).subscribe((res) => {
+      this.historyFrom.get('year')?.value!, this.historyFrom.get('month')?.value!
+      , this.addHistory.value).subscribe((res) => {
       this.toast.success('تم اضافة التوثيق', {duration: 5000, position: "top-right", theme: "snackbar"});
       this.dialog.closeAll();
       this.getHistory();
