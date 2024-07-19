@@ -19,4 +19,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /code/nabd ; git pull
-          docker build -t front:nabdelhayah-latest .
+          ng build --prod
+          cp -a dist/nabd/* /var/www/html/
+          systemctl restart apache2
