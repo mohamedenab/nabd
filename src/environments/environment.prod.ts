@@ -11,5 +11,4 @@ export const environment = {
   history: 'https://api.nabdelhayah.online/api/v1/history',
   upload: 'https://api.nabdelhayah.online/api/v1/upload',
   print: 'https://api.nabdelhayah.online/api/v1/print'
-
 };
