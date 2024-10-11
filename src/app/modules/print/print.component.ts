@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class PrintComponent {
   locationData: LocationData[] = [];
-  displayedColumns: string[] = ['medicine', 'dose'];
+  displayedColumns: string[] = ['medicine', 'dose','notes'];
   protected readonly Object = Object;
   public readonly router: Router = inject(Router);
 
