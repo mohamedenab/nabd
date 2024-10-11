@@ -19,6 +19,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /code/nabd ; git pull
-          ng build --prod
+          ng build
           cp -a dist/nabd/* /var/www/html/
           systemctl restart apache2
