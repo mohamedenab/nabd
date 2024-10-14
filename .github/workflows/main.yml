@@ -19,7 +19,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /code/nabd ; git pull
-          ng build
           rm -rf dist
+          ng build
           chown www-data:www-data dist/nabd/* 
           systemctl restart apache2
