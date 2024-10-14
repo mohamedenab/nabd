@@ -24,9 +24,7 @@
         <ng-container matColumnDef="dose">
           <th mat-header-cell *matHeaderCellDef>الجرعة المطلوبة</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.numberBox }}&nbsp; علبة&nbsp;{{
-              element.numberPastille
-            }}
+            {{ element.numberBox }}&nbsp; علبة&nbsp;{{ element.numberPastille }}
             &nbsp;شريط
           </td>
         </ng-container>
@@ -34,6 +32,12 @@
           <th mat-header-cell *matHeaderCellDef>ملاحظات</th>
           <td mat-cell *matCellDef="let element">
             {{ element.notes }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="checkbox">
+          <th mat-header-cell *matHeaderCellDef>ملاحظات</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox disabled></mat-checkbox>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

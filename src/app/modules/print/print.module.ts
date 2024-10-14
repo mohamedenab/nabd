@@ -7,6 +7,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableModule} from "@angular/material/table";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {MatTableModule} from "@angular/material/table";
   imports: [
     CommonModule,
     PrintRoutingModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
     MatSlideToggleModule,
