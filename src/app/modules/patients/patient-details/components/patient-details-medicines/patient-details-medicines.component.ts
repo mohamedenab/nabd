@@ -89,7 +89,7 @@ export class PatientDetailsMedicinesComponent implements OnInit {
       data: {message: `هل انت متاكد انك تريد حذف هذا الدواء؟`}
     })
     dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
+      if (res.dismiss) {
         this.patientService.deleteMedicine(id.toString()).subscribe((res) => {
           this.getMedicine();
           this.toast.success('تم حذف الدواء', {duration: 5000, position: "top-right", theme: "snackbar"});
