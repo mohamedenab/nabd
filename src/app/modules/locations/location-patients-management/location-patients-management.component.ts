@@ -1,19 +1,19 @@
-import {AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatDialog} from "@angular/material/dialog";
-import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
-import {ActivatedRoute, Router} from "@angular/router";
-import {catchError, map, of, startWith, switchMap} from "rxjs";
-import {LocationService} from "../../../core/services/location.service";
-import {Patient} from "../../../core/interfaces/patient";
-import {MedicineService} from "../../../core/services/medicine.service";
-import {PatientService} from "../../../core/services/patient.service";
-import {HotToastService} from "@ngneat/hot-toast";
-import {AuthService} from "../../../core/services/auth.service";
-import {PrintService} from "../../../core/services/print.service";
+import { AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatDialog } from "@angular/material/dialog";
+import { DeleteWarningComponent } from "../../../shared/components/delete-warning/delete-warning.component";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { catchError, map, of, startWith, switchMap } from "rxjs";
+import { LocationService } from "../../../core/services/location.service";
+import { Patient } from "../../../core/interfaces/patient";
+import { MedicineService } from "../../../core/services/medicine.service";
+import { PatientService } from "../../../core/services/patient.service";
+import { HotToastService } from "@ngneat/hot-toast";
+import { AuthService } from "../../../core/services/auth.service";
+import { PrintService } from "../../../core/services/print.service";
 
 const MEDICINE =
   `
@@ -26,7 +26,7 @@ const MEDICINE =
   styleUrls: ['./location-patients-management.component.scss']
 })
 export class LocationPatientsManagementComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'phone', 'action'];
+  displayedColumns: string[] = ['name', 'phone', 'action', 'deactivationReason'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   name = ''
   isLoading = true;
@@ -97,7 +97,7 @@ export class LocationPatientsManagementComponent implements OnInit, AfterViewIni
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         this.patientService.deletePatient(patient.id).subscribe((res) => {
-          this.toast.success('تم حذف الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+          this.toast.success('تم حذف الحالة', { duration: 5000, position: "top-right", theme: "snackbar" });
           this.getPatient().subscribe((res: any) => {
             this.dataSource = new MatTableDataSource(res.data);
           })
@@ -109,23 +109,27 @@ export class LocationPatientsManagementComponent implements OnInit, AfterViewIni
   togglePatient(patient: Patient, e: any) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟'}
+      data: {
+        message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟',
+        incommingStatuse: e.source.checked
+      }
     })
     dialogRef.afterClosed().subscribe((res) => {
       if (res.dismiss) {
         if (patient.active) {
-          this.patientService.deactivatePatient(patient.id).subscribe((res) => {
-            this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
-
+          this.patientService.deactivatePatient(patient.id, res.reason?? '').subscribe((res) => {
+            this.toast.success('تم تعطيل الحالة', { duration: 5000, position: "top-right", theme: "snackbar" });
+            patient.active = false
           })
         } else {
           this.patientService.activatePatient(patient.id).subscribe((res) => {
-            this.toast.success('تم تفعيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+            this.toast.success('تم تفعيل الحالة', { duration: 5000, position: "top-right", theme: "snackbar" });
+            patient.active = true
 
           })
         }
       } else {
-        e.source.checked = true;
+        e.source.checked = !e.source.checked;
       }
     })
   }
@@ -133,7 +137,7 @@ export class LocationPatientsManagementComponent implements OnInit, AfterViewIni
 
   printPatient(id: any) {
     this.printService.printPatient(id).subscribe((res) => {
-      this.router.navigate(['/print'], {state: {data: [{patientPrintDtos: [res]}]}})
+      this.router.navigate(['/print'], { state: { data: [{ patientPrintDtos: [res] }] } })
     })
 
   }
