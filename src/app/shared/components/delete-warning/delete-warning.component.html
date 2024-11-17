@@ -3,6 +3,13 @@
     <mat-icon>close</mat-icon>
   </button>
   <h3>{{data.message}}</h3>
+
+  <mat-form-field class="w-full mt-10 " appearance="outline" >
+    <mat-label>سبب تعطيل المريض</mat-label>
+    <textarea [rows]="5" matInput [(ngModel)]="reason" [disabled]="data.incommingStatuse" placeholder="سبب التعطيل" ></textarea>
+  </mat-form-field>
+
+
   <div class="flex gap-2.5 items-center justify-center">
     <button mat-raised-button color="primary" class=" mt-10 basis-1/2" cdkFocusInitial (click)="dismiss(false)">
       لا

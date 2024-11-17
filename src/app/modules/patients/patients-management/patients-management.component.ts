@@ -27,7 +27,7 @@ const MEDICINE =
   styleUrls: ['./patients-management.component.scss']
 })
 export class PatientsManagementComponent implements AfterViewInit {
-  displayedColumns: string[] = ['name', 'phone', 'location', 'action'];
+  displayedColumns: string[] = ['name', 'phone', 'location', 'action', 'deactivationReason'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   isLoading = true;
   totalElements = 10;
@@ -118,12 +118,12 @@ export class PatientsManagementComponent implements AfterViewInit {
   togglePatient(patient: Patient, e: any) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟'}
+      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟',incommingStatuse: e.source.checked}
     })
     dialogRef.afterClosed().subscribe((res) => {
       if (res.dismiss) {
         if (patient.active) {
-          this.patientService.deactivatePatient(patient.id).subscribe((res) => {
+          this.patientService.deactivatePatient(patient.id, res.reason?? '').subscribe((res) => {
             this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
 
           })
@@ -134,7 +134,7 @@ export class PatientsManagementComponent implements AfterViewInit {
           })
         }
       } else {
-        e.source.checked = true;
+        e.source.checked = !e.source.checked
       }
     })
   }

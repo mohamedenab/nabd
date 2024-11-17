@@ -23,8 +23,8 @@ export class PatientService {
     return this.http.put(`${this.baseUrl}/${id}`, data)
   }
 
-  deactivatePatient(id: string) {
-    return this.http.put(`${this.baseUrl}/deactivate/${id}`, {})
+  deactivatePatient(id: string, reason: string) {
+    return this.http.put(`${this.baseUrl}/deactivate/${id}`, {reasonForDeactivate: reason})
   }
 
   activatePatient(id: string) {
