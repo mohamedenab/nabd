@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs";
+import {map, Observable} from "rxjs";
+import { StatisticsResponse } from '../interfaces/medicine';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import {map} from "rxjs";
 export class MedicineService {
   baseUrl = environment.medicine
   uploadUrl = environment.upload
+  apiUrl = environment.apiUrl
 
   constructor(private http: HttpClient) {
   }
@@ -58,4 +60,7 @@ export class MedicineService {
   activateMedicine(medicineId: number, patientId: string) {
     return this.http.put(`${this.baseUrl}/${medicineId}/patient/${patientId}/activate`, {})
   }
-}
+  getStatistics(): Observable<StatisticsResponse>  {
+    return this.http.get<StatisticsResponse>(`${this.apiUrl}/report/statistics`, {})  
+  }
+} 

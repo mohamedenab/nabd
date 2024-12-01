@@ -24,6 +24,7 @@
                    *ngIf="authService.isUserSuperAdmin()">ادارة
   المستخدمين</a>
   <a class="inline-flex items-center" routerLink="/locations/management" (click)="closeSideNav()">ادارة المناطق</a>
+  <a class="inline-flex items-center" routerLink="/medicines/statistics" (click)="closeSideNav()">الاحصائيات</a>
   <button mat-icon-button [autofocus]="false" color="warn"
           class="mr-auto !inline-flex justify-center items-center"
           (click)="logout()">

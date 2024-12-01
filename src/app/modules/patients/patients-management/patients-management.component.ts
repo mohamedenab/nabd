@@ -1,20 +1,21 @@
-import {AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../../core/services/auth.service";
-import {LocationService} from "../../../core/services/location.service";
-import {MedicineService} from "../../../core/services/medicine.service";
-import {PatientService} from "../../../core/services/patient.service";
-import {HotToastService} from "@ngneat/hot-toast";
-import {PrintService} from "../../../core/services/print.service";
-import {MatDialog} from "@angular/material/dialog";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
-import {catchError, map, of, startWith, switchMap} from "rxjs";
-import {Patient} from "../../../core/interfaces/patient";
-import {DeleteWarningComponent} from "../../../shared/components/delete-warning/delete-warning.component";
-import {Medicine} from "../../../core/interfaces/medicine";
+import { AfterViewInit, Component, inject, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../../../core/services/auth.service";
+import { LocationService } from "../../../core/services/location.service";
+import { MedicineService } from "../../../core/services/medicine.service";
+import { PatientService } from "../../../core/services/patient.service";
+import { HotToastService } from "@ngneat/hot-toast";
+import { PrintService } from "../../../core/services/print.service";
+import { MatDialog } from "@angular/material/dialog";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
+import { catchError, map, Observable, of, startWith, switchMap } from "rxjs";
+import { Patient } from "../../../core/interfaces/patient";
+import { DeleteWarningComponent } from "../../../shared/components/delete-warning/delete-warning.component";
+import { Medicine } from "../../../core/interfaces/medicine";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
 const MEDICINE =
   `
@@ -34,6 +35,7 @@ export class PatientsManagementComponent implements AfterViewInit {
   search = ''
   medicineId = ''
   medicineName: string;
+  deactivatedFilter: boolean
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addRegionTemp') addRegionTemp!: TemplateRef<any>;
   public readonly route: ActivatedRoute = inject(ActivatedRoute);
@@ -68,6 +70,7 @@ export class PatientsManagementComponent implements AfterViewInit {
             return this.getPatient(
               this.paginator.pageIndex,
               this.paginator.pageSize,
+              this.deactivatedFilter? 'deactivated' : this.search.trim().length? 'name': null,
               this.search,
             ).pipe(catchError(() => of(null)));
           }),
@@ -85,11 +88,12 @@ export class PatientsManagementComponent implements AfterViewInit {
 
   }
 
-  getPatient(pageNo: number, pageSize: number, filter?: string) {
+  getPatient(pageNo: number, pageSize: number, filterType?: string | null, filter?: string) {
     if (this.router.url.includes('medicines')) {
       return this.medicineService.getPatients(this.medicineId, pageNo, pageSize)
     } else {
-      return this.patientService.getPatients(pageNo, pageSize, filter)
+      console.log(1)
+      return this.patientService.getPatients(pageNo, pageSize, filterType, filter)
     }
   }
 
@@ -104,12 +108,13 @@ export class PatientsManagementComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         this.patientService.deletePatient(patient.id).subscribe((res) => {
-          this.toast.success('تم حذف الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+          this.toast.success('تم حذف الحالة', { duration: 5000, position: "top-right", theme: "snackbar" });
           this.getPatient(this.paginator.pageIndex,
             this.paginator.pageSize,
+            this.deactivatedFilter? 'deactivated' : this.search.trim().length? 'name': null, 
             this.search).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource(res.data);
-          })
+              this.dataSource = new MatTableDataSource(res.data);
+            })
         })
       }
     })
@@ -118,18 +123,18 @@ export class PatientsManagementComponent implements AfterViewInit {
   togglePatient(patient: Patient, e: any) {
     let dialogRef = this.dialog.open(DeleteWarningComponent, {
       disableClose: true,
-      data: {message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟',incommingStatuse: e.source.checked}
+      data: { message: `هل انت متاكد انك تريد ${patient.active ? 'تعطيل' : 'تفعيل'} الحالة` + ' ' + patient.name + '؟', incommingStatuse: e.source.checked }
     })
     dialogRef.afterClosed().subscribe((res) => {
       if (res.dismiss) {
         if (patient.active) {
-          this.patientService.deactivatePatient(patient.id, res.reason?? '').subscribe((res) => {
-            this.toast.success('تم تعطيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+          this.patientService.deactivatePatient(patient.id, res.reason ?? '').subscribe((res) => {
+            this.toast.success('تم تعطيل الحالة', { duration: 5000, position: "top-right", theme: "snackbar" });
 
           })
         } else {
           this.patientService.activatePatient(patient.id).subscribe((res) => {
-            this.toast.success('تم تفعيل الحالة', {duration: 5000, position: "top-right", theme: "snackbar"});
+            this.toast.success('تم تفعيل الحالة', { duration: 5000, position: "top-right", theme: "snackbar" });
 
           })
         }
@@ -142,22 +147,46 @@ export class PatientsManagementComponent implements AfterViewInit {
 
   printPatient(id: any) {
     this.printService.printPatient(id).subscribe((res) => {
-      this.router.navigate(['/print'], {state: {data: [{patientPrintDtos: [res]}]}})
+      this.router.navigate(['/print'], { state: { data: [{ patientPrintDtos: [res] }] } })
     })
 
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+    const filterValue = (event.target as HTMLInputElement).value.trim();
     this.isLoading = true;
+    if(filterValue) this.deactivatedFilter = false
     this.getPatient(
       0,
       this.paginator.pageSize,
+      filterValue.length? 'name': null,
       filterValue
     ).subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.data);
       this.totalElements = res.totalElements;
       this.isLoading = false;
     })
+  }
+
+  toggleDeactivated(event: MatSlideToggleChange) {
+    console.log(event)
+    // let call: Observable<any>
+    this.search = ''
+    this.isLoading = true;
+    console.log(event.checked)
+    if (event.checked) {
+       this.getPatient(0, this.paginator.pageSize, 'deactivated').subscribe((res: any) => {
+        this.dataSource = new MatTableDataSource(res.data);
+        this.totalElements = res.totalElements;
+        this.isLoading = false;
+      })
+    } else {
+     this.getPatient(0, this.paginator.pageSize).subscribe((res: any) => {
+        this.dataSource = new MatTableDataSource(res.data);
+        this.totalElements = res.totalElements;
+        this.isLoading = false;
+      })
+    }
+ 
   }
 }

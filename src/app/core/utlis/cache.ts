@@ -9,6 +9,7 @@ export function cache<T>(
   key: string,
   storageService: StorageService, // Pass the StorageService as a parameter
 ): MonoTypeOperatorFunction<T> {
+  console.log(key)
   return (source) =>
     defer(() => {
       const item = storageService.getJSONFromStorage(key, 'memory');
