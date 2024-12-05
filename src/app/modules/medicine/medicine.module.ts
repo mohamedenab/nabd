@@ -16,12 +16,14 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MedicinesSearchComponent} from "../../shared/components/medicines-search/medicines-search.component";
 import { ReportComponent } from './report/report.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 
 @NgModule({
   declarations: [
     MedicineManagementComponent,
-    ReportComponent
+    ReportComponent,
+    StatisticsComponent
   ],
   imports: [
     CommonModule,
