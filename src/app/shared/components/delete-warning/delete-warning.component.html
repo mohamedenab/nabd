@@ -4,7 +4,7 @@
   </button>
   <h3>{{data.message}}</h3>
 
-  <mat-form-field class="w-full mt-10 " appearance="outline" >
+  <mat-form-field class="w-full mt-10 " appearance="outline"  *ngIf="!data.incommingStatuse">
     <mat-label>سبب تعطيل المريض</mat-label>
     <textarea [rows]="5" matInput [(ngModel)]="reason" [disabled]="data.incommingStatuse" placeholder="سبب التعطيل" ></textarea>
   </mat-form-field>
