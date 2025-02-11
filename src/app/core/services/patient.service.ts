@@ -94,8 +94,8 @@ export class PatientService {
     return this.http.delete(`${this.baseUrl}/${id}/specialization/${specializationId}`)
   }
 
-  getHistoryDates(id: string) {
-    return this.http.get(`${this.baseUrl}/${id}/history/dates`).pipe(
+  getHistoryDates(id: string, year: string) {
+    return this.http.get(`${this.baseUrl}/${id}/history/dates?year=${year}`).pipe(
       map((res: any) => {
         return res.data
       })

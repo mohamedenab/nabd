@@ -15,7 +15,7 @@ import {DeleteWarningComponent} from "../../../../../shared/components/delete-wa
 export class PatientDetailsHistoryComponent implements OnInit {
   @Input() history: patientHistory[] = [];
   @Input() months: string[];
-  @Input() years: string[];
+  @Input() years=['2024','2025'];
   historyFrom: FormGroup;
   addHistory: FormGroup;
   historyType = HistoryType
@@ -40,14 +40,16 @@ export class PatientDetailsHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('lol');
     const date = new Date();
-    if (!this.months.includes((date.getMonth() + 1).toString())) {
-      this.months.push((date.getMonth() + 1).toString())
-    }
-    if (!this.years.includes((date.getFullYear()).toString())) {
-      this.years.push((date.getFullYear()).toString())
-    }
+
+    // if (!this.years.includes((date.getFullYear()).toString())) {
+    //   this.years.push((date.getFullYear()).toString())
+    // }
+    this.historyFrom.get('year')?.valueChanges.subscribe((res) => {
+      this.patientService.getHistoryDates(this.route.snapshot.paramMap.get('id')!, res).subscribe((res) => {
+        this.months = res
+      })
+    })
   }
 
   openHistory() {

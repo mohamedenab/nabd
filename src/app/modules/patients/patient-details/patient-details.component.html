@@ -1,17 +1,28 @@
-<app-patient-details-header [patient]="patient" [specializations]="specializations"></app-patient-details-header>
-<mat-tab-group *ngIf="innerWidth<991;else page" class="w-[90vw] mx-auto">
+<app-patient-details-header
+  [patient]="patient"
+  [specializations]="specializations"
+></app-patient-details-header>
+<mat-tab-group *ngIf="innerWidth < 991; else page" class="w-[90vw] mx-auto">
   <mat-tab label="التقارير الشهريه">
-    <app-patient-details-history [months]="historyDates.month" [years]="historyDates.year"
-                                 [history]="history"></app-patient-details-history>
+    <app-patient-details-history
+      [months]="historyDates.month"
+      [history]="history"
+    ></app-patient-details-history>
   </mat-tab>
   <mat-tab label="الأدوية">
-    <app-patient-details-medicines [specializations]="specializations"
-                                   [medicine]="medicine"></app-patient-details-medicines>
+    <app-patient-details-medicines
+      [specializations]="specializations"
+      [medicine]="medicine"
+    ></app-patient-details-medicines>
   </mat-tab>
 </mat-tab-group>
 <ng-template #page>
-  <app-patient-details-history [months]="historyDates.month" [years]="historyDates.year"
-                               [history]="history"></app-patient-details-history>
-  <app-patient-details-medicines [specializations]="specializations"
-                                 [medicine]="medicine"></app-patient-details-medicines>
+  <app-patient-details-history
+    [months]="historyDates.month"
+    [history]="history"
+  ></app-patient-details-history>
+  <app-patient-details-medicines
+    [specializations]="specializations"
+    [medicine]="medicine"
+  ></app-patient-details-medicines>
 </ng-template>

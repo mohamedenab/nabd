@@ -32,10 +32,10 @@ export class PatientDetailsComponent implements OnInit {
       if (!this.historyDates.month.includes((date.getMonth() + 1))) {
         this.historyDates.month.push(date.getMonth()+1)
       }
-      if (!this.historyDates.year.includes(date.getFullYear())) {
-        this.historyDates.year.push(date.getFullYear())
-      }
-      this.historyDates.year = this.historyDates.year.map(String)
+      // if (!this.historyDates.year.includes(date.getFullYear())) {
+      //   this.historyDates.year.push(date.getFullYear())
+      // }
+      // this.historyDates.year = this.historyDates.year.map(String)
       this.historyDates.month = this.historyDates.month.map(String)
       this.specializations = res.specialization;
     })

@@ -16,5 +16,5 @@ export const patientHistoryResolver: ResolveFn<Observable<any>> = (route, state,
 };
 export const patientHistoryDatesResolver: ResolveFn<Observable<any>> = (route, state, patientService: PatientService = inject(PatientService)) => {
   const date = new Date()
-  return patientService.getHistoryDates(route.paramMap.get('id')!);
+  return patientService.getHistoryDates(route.paramMap.get('id')!, date.getFullYear().toString());
 };

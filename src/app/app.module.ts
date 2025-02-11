@@ -33,22 +33,13 @@ import {GlobalErrorHandler} from "./core/Interceptors/global-error-handler";
   },
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true}, ToastService,
     {
-      provide: ErrorHandler,
-      useValue: Sentry.createErrorHandler({
-        showDialog: false,
-      }),
-    }, {
-      provide: Sentry.TraceService,
-      deps: [Router],
-    },
-    {
       provide: APP_INITIALIZER,
       useFactory: () => () => {
       },
       deps: [Sentry.TraceService],
       multi: true,
     },
-    {provide: ErrorHandler, useClass: GlobalErrorHandler}
+    // {provide: ErrorHandler, useClass: GlobalErrorHandler}
   ],
   bootstrap: [AppComponent]
 })
