@@ -21,6 +21,9 @@ module.exports = {
       fontFamily: {
         cairo: ['Almarai', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'Arial', 'sans-serif']
       },
+      minWidth: {
+        '30': '30%'
+      }
     },
   },
   plugins: [],

@@ -23,17 +23,17 @@ export class PatientService {
     return this.http.put(`${this.baseUrl}/${id}`, data)
   }
 
-  deactivatePatient(id: string) {
-    return this.http.put(`${this.baseUrl}/deactivate/${id}`, {})
+  deactivatePatient(id: string, reason: string) {
+    return this.http.put(`${this.baseUrl}/deactivate/${id}`, {reasonForDeactivate: reason})
   }
 
   activatePatient(id: string) {
     return this.http.put(`${this.baseUrl}/activate/${id}`, {})
   }
 
-  getPatients(pageNo: number, pageSize: number, filter?: string) {
-    return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name` + (filter ? `&filterType=name&filterValue=${filter}` : ''))
-      .pipe(cache(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name` + (filter ? `&filterType=name&filterValue=${filter}` : ''), this.storageService))
+  getPatients(pageNo: number, pageSize: number, filterType?: string | null, filter?: string) {
+    return this.http.get(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name` + (filterType ? filterType ==='name'?  `&filterType=name&filterValue=${filter}`: '&filterType=deactivated' : ''))
+      .pipe(cache(`${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=name` + (filterType ? filterType ==='name'?  `&filterType=name&filterValue=${filter}`: '&filterType=deactivated' : ''), this.storageService))
 
   }
 

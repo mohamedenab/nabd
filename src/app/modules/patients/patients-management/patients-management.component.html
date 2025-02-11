@@ -1,10 +1,15 @@
-<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10" *ngIf="medicineId">{{medicineName}}</h3>
+<h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10" *ngIf="medicineId">
+  {{medicineName}}</h3>
 <h3 class="text-2xl border-r-4 border-r-primary-500 font-bold text-primary-500 mr-5 pr-2 mb-8 mt-10">الحالات</h3>
 <mat-form-field class="w-full mt-10 px-10" appearance="outline">
   <mat-label> بحث باسم الحاله</mat-label>
   <input matInput (keyup)="applyFilter($event)" [(ngModel)]="search" placeholder="أحمدٍ" #input>
 </mat-form-field>
 <div class=" mt-10 px-10">
+
+  <mat-slide-toggle [(ngModel)]="deactivatedFilter" class="my-6" (change)="toggleDeactivated($event)">
+    عرض المرضي الغير مفعلين
+  </mat-slide-toggle>
   <div class="mat-elevation-z8 w-full ">
     <div class="overflow-x-auto">
       <table mat-table [dataSource]="dataSource" class="rounded-lg">
@@ -21,18 +26,18 @@
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef> رقم الهاتف</th>
           <td mat-cell *matCellDef="let element">
-            <a class="underline whitespace-nowrap" *ngFor="let phone of element.mobileNumbers"
-               [href]="'tel:'+phone">
+            <a class="underline whitespace-nowrap" *ngFor="let phone of element.mobileNumbers" [href]="'tel:'+phone">
               {{ phone }}
-            </a></td>
+            </a>
+          </td>
         </ng-container>
-        <ng-container matColumnDef="location" >
+        <ng-container matColumnDef="location">
           <th mat-header-cell *matHeaderCellDef>المنطقة</th>
           <td mat-cell *matCellDef="let element">
-            <a class="underline whitespace-nowrap"
-               [routerLink]="'/locations/'+element.locationDto.id">
+            <a class="underline whitespace-nowrap" [routerLink]="'/locations/'+element.locationDto.id">
               {{ element.locationDto.locationName }}
-            </a></td>
+            </a>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="action">
@@ -42,24 +47,24 @@
               <a [routerLink]="'/patients/'+element.id+'/edit'" *ngIf="!authService.isUserNormal()">
 
                 <button mat-raised-button color="primary">
-              <span class="flex gap-2.5">
-              <mat-icon aria-hidden="false" fontIcon="edit"></mat-icon>
-              تعديل
-              </span>
+                  <span class="flex gap-2.5">
+                    <mat-icon aria-hidden="false" fontIcon="edit"></mat-icon>
+                    تعديل
+                  </span>
                 </button>
               </a>
               <button mat-raised-button color="warn" (click)="deletePatient(element)"
-                      *ngIf="authService.isUserSuperAdmin()">
-              <span class="flex gap-2.5">
-              <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon>
-              حذف
-              </span>
+                *ngIf="authService.isUserSuperAdmin()">
+                <span class="flex gap-2.5">
+                  <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon>
+                  حذف
+                </span>
               </button>
               <button mat-raised-button (click)="printPatient(element.id)">
-              <span class="flex gap-2.5">
-              <mat-icon aria-hidden="false" fontIcon="print"></mat-icon>
-              طباعة
-              </span>
+                <span class="flex gap-2.5">
+                  <mat-icon aria-hidden="false" fontIcon="print"></mat-icon>
+                  طباعة
+                </span>
               </button>
               <mat-slide-toggle [checked]="element.active" (change)="togglePatient(element,$event)">
                 {{ element.active ? 'تعطيل' : 'تفعيل' }}
@@ -74,7 +79,14 @@
             </div>
           </td>
         </ng-container>
-
+        <ng-container matColumnDef="deactivationReason">
+          <th mat-header-cell *matHeaderCellDef>سبب التعطيل</th>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.reasonForDeactivate &&  !element.active">
+              {{element.reasonForDeactivate}}
+            </span>
+          </td>
+        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row [ngClass]="{'!bg-red-300':!row?.active}" *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -82,10 +94,6 @@
     </div>
 
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-    <mat-paginator [length]="totalElements"
-                   [pageSize]="10"
-                   [pageSizeOptions]="[ 10, 25, 100]"></mat-paginator>
+    <mat-paginator [length]="totalElements" [pageSize]="10" [pageSizeOptions]="[ 10, 25, 100]"></mat-paginator>
   </div>
 </div>
-
-
