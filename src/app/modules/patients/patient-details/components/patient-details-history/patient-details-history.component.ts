@@ -47,7 +47,7 @@ export class PatientDetailsHistoryComponent implements OnInit {
     // }
     this.historyFrom.get('year')?.valueChanges.subscribe((res) => {
       this.patientService.getHistoryDates(this.route.snapshot.paramMap.get('id')!, res).subscribe((res) => {
-        this.months = res
+        this.months = res.month
       })
     })
   }
